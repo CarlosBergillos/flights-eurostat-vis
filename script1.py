@@ -8,6 +8,8 @@ df = pandas.read_csv(filename, sep='\t')
 #print("ES_LEMD_ES_LEBL" in df['airpts'].unique())
 
 #cols = ['2000M01', '2000M02', '2000M03', '2000M04','2000M05','2000M06', '2000M07', '2000M08', '2000M09', '2000M10','2000M11','2000M12',
+cols_2018 = ['2018M01', '2018M02', '2018M03', '2018M04','2018M05','2018M06', '2018M07', '2018M08', '2018M09', '2018M10','2018M11','2018M12']
+
 cols_months = [ '2001M01', '2001M02', '2001M03', '2001M04','2001M05','2001M06', '2001M07', '2001M08', '2001M09', '2001M10','2001M11','2001M12',
                 '2002M01', '2002M02', '2002M03', '2002M04','2002M05','2002M06', '2002M07', '2002M08', '2002M09', '2002M10','2002M11','2002M12',
                 '2003M01', '2003M02', '2003M03', '2003M04','2003M05','2003M06', '2003M07', '2003M08', '2003M09', '2003M10','2003M11','2003M12',
@@ -31,20 +33,36 @@ cols_months = [ '2001M01', '2001M02', '2001M03', '2001M04','2001M05','2001M06', 
 cols_years = [  '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009',
         '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018']
 
-# flights_from_LEBL = df[(df['airpt_dep']=="LEBL") & (df['tra_meas']=="CAF_PAS")]
+flights_from_LEBL = df[(df['airpt_dep']=="LEBL") & (df['tra_meas']=="CAF_PAS")]
+flights_from_LEBL_to_US = df[(df['airpt_dep']=="LEBL") & (df['country_arr']=="US") & (df['tra_meas']=="CAF_PAS")]
+
 # sum_flights_from_LEBL = flights_from_LEBL[cols_years].sum()
 # plot1 = sum_flights_from_LEBL.plot(x ='t', y='flights', kind = 'bar')
 # plot1.get_figure().savefig('flights_from_LEBL.pdf', format='pdf')
 # plt.clf()
 
 pax_from_LEBL = df[(df['airpt_dep']=="LEBL") & (df['tra_meas']=="PAS_CRD")]
-# sum_pax_from_LEBL = pax_from_LEBL[cols_years].sum()
-# plot2 = sum_pax_from_LEBL.plot(kind = 'bar')
-# plot2.get_figure().savefig('pax_from_LEBL.pdf', format='pdf')
+pax_from_LEBL_to_US = df[(df['airpt_dep']=="LEBL") & (df['country_arr']=="US") & (df['tra_meas']=="PAS_CRD")]
+
+sum_pax_from_LEBL = pax_from_LEBL[cols_years].sum()
+# print(sum_pax_from_LEBL)
+plot2 = sum_pax_from_LEBL.plot(kind = 'bar')
+plot2.get_figure().savefig('pax_from_LEBL.pdf', format='pdf')
+
+sum_pax_from_LEBL_2018 = pax_from_LEBL[cols_2018].sum()
+# print(sum_pax_from_LEBL_2018)
+plot3 = sum_pax_from_LEBL_2018.plot(kind = 'bar')
+plot3.get_figure().savefig('pax_from_LEBL_2018.pdf', format='pdf')
 
 LEBL_destinations_pax_2018 = pax_from_LEBL[['airpt_arr', '2018']]
 LEBL_destinations_pax_2018 = LEBL_destinations_pax_2018.sort_values(by=['2018'], ascending=False)
-print(LEBL_destinations_pax_2018.head(10))
+# print(LEBL_destinations_pax_2018.head(10))
+
+LEBL_destinations_flights_2018 = flights_from_LEBL[['airpt_arr', '2018']]
+LEBL_destinations_flights_2018 = LEBL_destinations_flights_2018.sort_values(by=['2018'], ascending=False)
+# print(LEBL_destinations_flights_2018.head(10))
+
+
 #print(len(df['airpts'].unique()))
 #print(df['unit'].unique())
 #print(df['tra_meas'].unique())
