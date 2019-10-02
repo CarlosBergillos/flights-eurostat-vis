@@ -276,7 +276,7 @@ function toBubbles(input) {
     	datamap: datamap
     });
 
-    fetch('https://cbergillos.com/ES-eurostat-data-visualization/data/LEGE_destinations_pax_2018.csv')
+    fetch('https://cbergillos.com/ES-eurostat-data-visualization/data/LEBL_destinations_pax_2018.csv')
     .then(response => response.text())
     .then(text => {
         jsonArray = parseCSV(text)
