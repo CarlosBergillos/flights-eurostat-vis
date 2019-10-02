@@ -1,8 +1,8 @@
 import pandas
 import matplotlib.pyplot as plt
 
-filename = './avia_par_es/avia_par_es_fixed.tsv'
-df = pandas.read_csv(filename, sep='\t')
+filename = './avia_par_es/avia_par_es_fixed.csv'
+df = pandas.read_csv(filename, sep=',')
 
 #print("ES_LEBL_ES_LEMD" in df['airpts'].unique())
 #print("ES_LEMD_ES_LEBL" in df['airpts'].unique())
