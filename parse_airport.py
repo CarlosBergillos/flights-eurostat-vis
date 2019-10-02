@@ -2,18 +2,19 @@ import pandas as pd
 import subprocess
 import csv
 
-airport = "LEGE"
+airport = "LEBL"
+year = "2001"
 
 file_in = './avia_par_es/avia_par_es_fixed.csv'
 file_airpts = './other_data/airports.csv'
-file_out = f'./custom_data/{airport}_destinations_pax_2018.csv'
+file_out = f'./custom_data/{airport}_destinations_pax_'+year+'.csv'
 
 df = pd.read_csv(file_in, sep=',')
 
 pax_from_LEBL = df[(df['airpt_dep']==airport) & (df['tra_meas']=="PAS_CRD")]
-LEBL_destinations_pax_2018 = pax_from_LEBL[['airpt_arr', '2018']]
-LEBL_destinations_pax_2018 = LEBL_destinations_pax_2018.rename(columns={'2018': 'pax2018'})
-LEBL_destinations_pax_2018 = LEBL_destinations_pax_2018.sort_values(by=['pax2018'], ascending=False)
+LEBL_destinations_pax_2018 = pax_from_LEBL[['airpt_arr', year]]
+LEBL_destinations_pax_2018 = LEBL_destinations_pax_2018.rename(columns={year: 'pax'+year})
+LEBL_destinations_pax_2018 = LEBL_destinations_pax_2018.sort_values(by=['pax'+year], ascending=False)
 
 # print(LEBL_destinations_pax_2018)
 # LEBL_destinations_pax_2018.to_csv(file_out, index=None, header=False, sep=',')

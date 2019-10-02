@@ -629,6 +629,7 @@
               'fill':  $this.style('fill'),
               'stroke': $this.style('stroke'),
               'stroke-width': $this.style('stroke-width'),
+              'stroke-opacity': $this.style('stroke-opacity'),
               'fill-opacity': $this.style('fill-opacity')
             };
 
