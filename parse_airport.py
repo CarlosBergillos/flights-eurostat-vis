@@ -2,8 +2,8 @@ import pandas as pd
 import subprocess
 import csv
 
-airport = "LEBL"
-year = "2001"
+airport = "LEMD"
+year = "2018"
 
 file_in = './avia_par_es/avia_par_es_fixed.csv'
 file_airpts = './other_data/airports.csv'
