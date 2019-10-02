@@ -446,7 +446,8 @@
                   // TODO: Move this to inside `if` clause when setting attr `d`
               var greatArc = d3.geo.greatArc()
                   .source(function(d) { return [val(d.origin.longitude, d), val(d.origin.latitude, d)]; })
-                  .target(function(d) { return [val(d.destination.longitude, d), val(d.destination.latitude, d)]; });
+                  .target(function(d) { return [val(d.destination.longitude, d), val(d.destination.latitude, d)]; })
+                  .precision(0.1);
 
               return path(greatArc(datum))
             }

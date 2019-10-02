@@ -33,7 +33,8 @@ function toArcs(input) {
             var data = {}
             var from = {"latitude":row["airpt_dep_lat"], "longitude":row["airpt_dep_lon"]}
             var to = {"latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"]}
-            var options = {strokeWidth: row["pax2018"]/100000, strokeColor: 'rgba(221, 28, 119, 0.3)'}
+            pax_factor = Math.sqrt(row["pax2018"])/200
+            var options = {strokeWidth: pax_factor, strokeColor: 'rgba(221, 28, 119, '+Math.min(pax_factor/10, 1)+')'}
             data = {"origin": from, "destination": to, "options": options}
             arcs.push(data)
         }
@@ -273,8 +274,8 @@ function toBubbles(input) {
     .then(response => response.text())
     .then(text => {
         jsonArray = parseCSV(text)
-        datamap.bubbles(toBubbles(jsonArray))
         datamap.arc(toArcs(jsonArray), {greatArc: true,animationSpeed: 600});
+        datamap.bubbles(toBubbles(jsonArray))
     })
   }
 
