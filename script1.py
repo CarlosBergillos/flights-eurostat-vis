@@ -56,7 +56,7 @@ plot3.get_figure().savefig('pax_from_LEBL_2018.pdf', format='pdf')
 
 LEBL_destinations_pax_2018 = pax_from_LEBL[['airpt_arr', '2018']]
 LEBL_destinations_pax_2018 = LEBL_destinations_pax_2018.sort_values(by=['2018'], ascending=False)
-# print(LEBL_destinations_pax_2018.head(10))
+print(LEBL_destinations_pax_2018.head(10))
 
 LEBL_destinations_flights_2018 = flights_from_LEBL[['airpt_arr', '2018']]
 LEBL_destinations_flights_2018 = LEBL_destinations_flights_2018.sort_values(by=['2018'], ascending=False)

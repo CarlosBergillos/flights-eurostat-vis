@@ -8,18 +8,43 @@
 </body>
 <script>
 
-function jsonDataArray(array) {
-    var headers = array[0].split(',');
-    var jsonData = [];
-    for (var i = 1, length = array.length; i < length; i++ ){
-      var row = array[i].split(',');
-      var data = {};
-      for ( var x = 0; x < row.length; x++ ){
-        data[headers[x]] = row[x];
-      }
-      jsonData.push(data);
-    }
-    return jsonData;
+function parseCSV(input) {
+    var rows = input.split(/\r?\n/);
+    var keys = rows.shift().split(",");
+    return rows.map(function(row) {
+        return row.split(",").reduce(function(map, val, i) {
+            map[keys[i]] = val;
+            return map;
+        }, {});
+    })
+}
+
+function toArcs(input) {
+    var arcs = []
+    input.map(function(row) {
+        if(Object.entries(row).length > 1){
+            var data = {}
+            var from = {"latitude":row["airpt_dep_lat"], "longitude":row["airpt_dep_lon"]}
+            var to = {"latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"]}
+            var options = {strokeWidth: 2, strokeColor: 'rgba(221, 28, 119, 0.3)'}
+            data = {"origin": from, "destination": to, "options": options}
+            arcs.push(data)
+        }
+    })
+    return arcs
+}
+
+
+function toBubbles(input) {
+    var bubbles = []
+    input.map(function(row) {
+        if(Object.entries(row).length > 1){
+            options = {"borderWidth": 0}
+            data = {"radius": 3, "name": row["airpt_arr"], "latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"], "borderWidth": 0, defaultFillColor: '#f00', fillOpacity: 1}
+            bubbles.push(data)
+        }
+    })
+    return bubbles
 }
 
 var map = new Datamap({
@@ -36,37 +61,16 @@ var map = new Datamap({
     responsive: false
 });
 
-map.arc([
-    {origin: {
-        latitude: 39.861667,
-        longitude: -104.673056
-    },
-    destination: {
-        latitude: 35.877778,
-        longitude: 8.7875
-    },
-    options: {
-        strokeWidth: 2,
-        strokeColor: 'rgba(100, 10, 200, 0.4)',
-    }},
-    {origin: {
-        latitude: 30.194444,
-        longitude: -97.67
-    },
-    destination: {
-        latitude: 25.793333,
-        longitude: 23.290556
-    },
-    options: {
-        strokeWidth: 20,
-        strokeColor: 'rgba(100, 10, 200, 0.4)',
-    }}
-], {greatArc: true,animationSpeed: 600});
 
-
-fetch('public/data/LEBL_destinations_pax_2018.csv', {mode: 'no-cors'})
-  .then(response => response.text())
-  .then(text => console.log(text))
+<!--fetch('data/LEBL_destinations_pax_2018.csv', {mode: 'no-cors'})-->
+fetch('https://cbergillos.com/ES-eurostat-data-visualization/data/LEBL_destinations_pax_2018.csv')
+    .then(response => response.text())
+    .then(text => {
+        jsonArray = parseCSV(text)
+        map.bubbles(toBubbles(jsonArray))
+        map.arc(toArcs(jsonArray), {greatArc: true,animationSpeed: 600});
+        <!--console.log(parseCSV(text))-->
+})
 
 </script>
 <html>
