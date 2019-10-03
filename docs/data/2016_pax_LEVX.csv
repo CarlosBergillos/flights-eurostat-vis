@@ -1,4 +1,4 @@
-airpt_arr,pax2016,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,545042,LEVX,42.2318000793457,-8.62677001953125,40.471926,-3.56264
 LEBL,267053,LEVX,42.2318000793457,-8.62677001953125,41.2971,2.0784599999999998
 LIPE,20897,LEVX,42.2318000793457,-8.62677001953125,44.5354,11.2887

@@ -19,8 +19,8 @@ def parse_airport_data(airport, year, unit):
 
     data_from_airport = df[(df['airpt_dep']==airport) & (df['tra_meas']==unit)]
     destinations_data = data_from_airport[['airpt_arr', year]]
-    destinations_data = destinations_data.rename(columns={year: unit_s+year})
-    destinations_data = destinations_data.sort_values(by=[unit_s+year], ascending=False)
+    destinations_data = destinations_data.rename(columns={year: 'value'})
+    destinations_data = destinations_data.sort_values(by=['value'], ascending=False)
 
     # print(LEBL_destinations_pax_2018)
     # LEBL_destinations_pax_2018.to_csv(file_out, index=None, header=False, sep=',')
@@ -30,7 +30,7 @@ def parse_airport_data(airport, year, unit):
     dep_lon = dep_airport['longitude_deg']
 
     for i, row in destinations_data.iterrows():
-        if row[unit_s+year] == 0:
+        if row['value'] == 0:
             destinations_data.drop(i, inplace=True)
             continue
 

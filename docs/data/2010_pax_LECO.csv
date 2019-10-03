@@ -1,4 +1,4 @@
-airpt_arr,pax2010,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,610648,LECO,43.302101,-8.37726,40.471926,-3.56264
 LEBL,257160,LECO,43.302101,-8.37726,41.2971,2.0784599999999998
 EGLL,83106,LECO,43.302101,-8.37726,51.4706,-0.461941

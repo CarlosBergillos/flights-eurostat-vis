@@ -1,4 +1,4 @@
-airpt_arr,pax2018,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,487006,LEAS,43.5635986328125,-6.0346198081970215,40.471926,-3.56264
 LEBL,273181,LEAS,43.5635986328125,-6.0346198081970215,41.2971,2.0784599999999998
 LEMG,84924,LEAS,43.5635986328125,-6.0346198081970215,36.67490005493164,-4.499110221862793

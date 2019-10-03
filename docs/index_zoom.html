@@ -30,11 +30,11 @@ function toArcs(input) {
     var arcs = []
     input.map(function(row) {
         if(Object.entries(row).length > 1){
-            if(row["pax2018"] > 0){
+            if(row["value"] > 0){
                 var data = {}
                 var from = {"latitude":row["airpt_dep_lat"], "longitude":row["airpt_dep_lon"]}
                 var to = {"latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"]}
-                pax_factor = Math.sqrt(row["pax2018"])/200
+                pax_factor = Math.sqrt(row["value"])/200
                 var options = {strokeWidth: pax_factor, strokeColor: 'rgba(221, 28, 119, '+Math.min(pax_factor/10, 1)+')'}
                 data = {"origin": from, "destination": to, "options": options}
                 arcs.push(data)
@@ -48,9 +48,9 @@ function toBubbles(input) {
     var bubbles = []
     input.map(function(row) {
         if(Object.entries(row).length > 1){
-            if(row["pax2018"] > 0){
+            if(row["value"] > 0){
                 //pax_factor = Math.sqrt(row["pax2018"])/500
-                pax_factor = 1 + Math.pow(row["pax2018"],3/4)/15000
+                pax_factor = 1 + Math.pow(row["value"],3/4)/15000
                 data = {radius: circleRadius*pax_factor/prev_scale, "name": row["airpt_arr"], "latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"], borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(221, 28, 119, 1)', fillOpacity: 1}
                 bubbles.push(data)
             }
@@ -284,6 +284,25 @@ function toBubbles(input) {
             'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LERS.csv',
             'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEAL.csv',
             'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_GCXO.csv'];
+
+    urls = ['https://cbergillos.com/ES-eurostat-data-visualization/data/2001_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2002_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2003_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2004_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2005_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2006_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2007_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2008_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2009_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2010_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2011_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2012_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2013_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2014_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2015_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2016_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2017_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEBL.csv'];
     fetch(urls[url_n])
     .then(response => response.text())
     .then(text => {

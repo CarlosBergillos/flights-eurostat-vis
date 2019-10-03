@@ -1,4 +1,4 @@
-airpt_arr,pax2007,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 EGCC,709804,GCTS,28.044500351,-16.5725002289,53.35369873046875,-2.2749500274658203
 EGKK,569847,GCTS,28.044500351,-16.5725002289,51.148102,-0.190278
 LEMD,537143,GCTS,28.044500351,-16.5725002289,40.471926,-3.56264

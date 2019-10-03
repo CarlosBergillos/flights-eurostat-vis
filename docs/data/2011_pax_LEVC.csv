@@ -1,4 +1,4 @@
-airpt_arr,pax2011,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEPA,472534,LEVC,39.4893,-0.481625,39.551700591999996,2.73881006241
 LEMD,441200,LEVC,39.4893,-0.481625,40.471926,-3.56264
 LFPG,247561,LEVC,39.4893,-0.481625,49.012798,2.55

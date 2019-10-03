@@ -1,4 +1,4 @@
-airpt_arr,pax2005,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 EGSS,435679,LEGE,41.901000976999995,2.7605500221,51.8849983215,0.23499999940400002
 LIRA,226578,LEGE,41.901000976999995,2.7605500221,41.7994,12.5949
 EBCI,224856,LEGE,41.901000976999995,2.7605500221,50.459202000000005,4.4538199999999994

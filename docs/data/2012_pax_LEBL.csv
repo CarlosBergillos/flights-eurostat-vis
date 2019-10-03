@@ -1,4 +1,4 @@
-airpt_arr,pax2012,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,2550193,LEBL,41.2971,2.0784599999999998,40.471926,-3.56264
 LEPA,1460106,LEBL,41.2971,2.0784599999999998,39.551700591999996,2.73881006241
 EHAM,1250358,LEBL,41.2971,2.0784599999999998,52.308601,4.76389

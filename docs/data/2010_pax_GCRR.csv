@@ -1,4 +1,4 @@
-airpt_arr,pax2010,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,583511,GCRR,28.945498999999998,-13.6052,40.471926,-3.56264
 GCLP,534771,GCRR,28.945498999999998,-13.6052,27.931900024414066,-15.38659954071045
 EGCC,318410,GCRR,28.945498999999998,-13.6052,53.35369873046875,-2.2749500274658203

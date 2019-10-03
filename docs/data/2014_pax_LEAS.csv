@@ -1,4 +1,4 @@
-airpt_arr,pax2014,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,392654,LEAS,43.5635986328125,-6.0346198081970215,40.471926,-3.56264
 LEBL,268530,LEAS,43.5635986328125,-6.0346198081970215,41.2971,2.0784599999999998
 EGSS,83432,LEAS,43.5635986328125,-6.0346198081970215,51.8849983215,0.23499999940400002

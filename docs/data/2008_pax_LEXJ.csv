@@ -1,4 +1,4 @@
-airpt_arr,pax2008,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,318678,LEXJ,43.427101135253906,-3.82000994682312,40.471926,-3.56264
 LIRA,105342,LEXJ,43.427101135253906,-3.82000994682312,41.7994,12.5949
 EGSS,104746,LEXJ,43.427101135253906,-3.82000994682312,51.8849983215,0.23499999940400002

@@ -1,4 +1,4 @@
-airpt_arr,pax2018,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEPA,485119,LEVC,39.4893,-0.481625,39.551700591999996,2.73881006241
 EDDF,392075,LEVC,39.4893,-0.481625,50.033333,8.570556
 EHAM,375163,LEVC,39.4893,-0.481625,52.308601,4.76389

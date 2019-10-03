@@ -1,4 +1,4 @@
-airpt_arr,pax2016,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,178960,LEXJ,43.427101135253906,-3.82000994682312,40.471926,-3.56264
 LEBL,129876,LEXJ,43.427101135253906,-3.82000994682312,41.2971,2.0784599999999998
 EGSS,80480,LEXJ,43.427101135253906,-3.82000994682312,51.8849983215,0.23499999940400002

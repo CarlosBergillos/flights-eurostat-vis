@@ -1,4 +1,4 @@
-airpt_arr,pax2004,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,28620,LEVT,42.8828010559082,-2.7244699001312256,40.471926,-3.56264
 GCTS,17181,LEVT,42.8828010559082,-2.7244699001312256,28.044500351,-16.5725002289
 LEBL,13395,LEVT,42.8828010559082,-2.7244699001312256,41.2971,2.0784599999999998

@@ -1,4 +1,4 @@
-airpt_arr,pax2008,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,1707740,LEPA,39.551700591999996,2.73881006241,40.471926,-3.56264
 LEBL,1585894,LEPA,39.551700591999996,2.73881006241,41.2971,2.0784599999999998
 EDDL,930120,LEPA,39.551700591999996,2.73881006241,51.289501,6.766780000000001

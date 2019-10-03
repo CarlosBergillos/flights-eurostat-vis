@@ -1,4 +1,4 @@
-airpt_arr,pax2006,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,882933,LEVC,39.4893,-0.481625,40.471926,-3.56264
 LEPA,489358,LEVC,39.4893,-0.481625,39.551700591999996,2.73881006241
 LEZL,313290,LEVC,39.4893,-0.481625,37.41799926757813,-5.8931097984313965

@@ -1,4 +1,4 @@
-airpt_arr,pax2017,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,610820,LEST,42.89630126953125,-8.415140151977539,40.471926,-3.56264
 LEBL,419755,LEST,42.89630126953125,-8.415140151977539,41.2971,2.0784599999999998
 LEPA,154758,LEST,42.89630126953125,-8.415140151977539,39.551700591999996,2.73881006241

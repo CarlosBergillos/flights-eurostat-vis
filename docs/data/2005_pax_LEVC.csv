@@ -1,4 +1,4 @@
-airpt_arr,pax2005,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,830800,LEVC,39.4893,-0.481625,40.471926,-3.56264
 LEPA,570596,LEVC,39.4893,-0.481625,39.551700591999996,2.73881006241
 EGSS,307739,LEVC,39.4893,-0.481625,51.8849983215,0.23499999940400002

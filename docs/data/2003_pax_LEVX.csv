@@ -1,4 +1,4 @@
-airpt_arr,pax2003,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
+airpt_arr,value,airpt_dep,airpt_dep_lat,airpt_dep_lon,airpt_arr_lat,airpt_arr_lon
 LEMD,610614,LEVX,42.2318000793457,-8.62677001953125,40.471926,-3.56264
 LEBL,130102,LEVX,42.2318000793457,-8.62677001953125,41.2971,2.0784599999999998
 LFPO,26316,LEVX,42.2318000793457,-8.62677001953125,48.7233333,2.3794444
