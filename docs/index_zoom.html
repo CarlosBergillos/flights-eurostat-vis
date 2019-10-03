@@ -51,7 +51,7 @@ function toBubbles(input) {
             if(row["pax2018"] > 0){
                 //pax_factor = Math.sqrt(row["pax2018"])/500
                 pax_factor = 1 + Math.pow(row["pax2018"],3/4)/15000
-                data = {radius: circleRadius*pax_factor, "name": row["airpt_arr"], "latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"], borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(221, 28, 119, 1)', fillOpacity: 1}
+                data = {radius: circleRadius*pax_factor/prev_scale, "name": row["airpt_arr"], "latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"], borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(221, 28, 119, 1)', fillOpacity: 1}
                 bubbles.push(data)
             }
         }
@@ -279,6 +279,7 @@ function toBubbles(input) {
     url_n = 0;
     urls = ['https://cbergillos.com/ES-eurostat-data-visualization/data/LEBL_destinations_pax_2018.csv',
             'https://cbergillos.com/ES-eurostat-data-visualization/data/LEMD_destinations_pax_2018.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/LEPA_destinations_pax_2018.csv',
             'https://cbergillos.com/ES-eurostat-data-visualization/data/LEGE_destinations_pax_2018.csv'];
     fetch(urls[url_n])
     .then(response => response.text())
