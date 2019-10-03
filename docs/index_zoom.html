@@ -277,10 +277,13 @@ function toBubbles(input) {
     	datamap: datamap
     });
     url_n = 0;
-    urls = ['https://cbergillos.com/ES-eurostat-data-visualization/data/LEBL_destinations_pax_2018.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/LEMD_destinations_pax_2018.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/LEPA_destinations_pax_2018.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/LEGE_destinations_pax_2018.csv'];
+    urls = ['https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEBL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEMD.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEPA.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEGE.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LERS.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEAL.csv',
+            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_GCXO.csv'];
     fetch(urls[url_n])
     .then(response => response.text())
     .then(text => {

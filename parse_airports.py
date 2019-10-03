@@ -2,7 +2,7 @@ import pandas as pd
 import subprocess
 import csv
 
-year = "2018"
+
 unit = "PAS_CRD"
 
 units_map = {"PAS_CRD":"pax"}
@@ -56,6 +56,7 @@ if __name__ == '__main__':
     #prune to a subset of only the airports we need for faster queries later
     airports_data = airports_data[(airports_data['ident'].isin(departure_airports)) | (airports_data['ident'].isin(arrival_airports))]
 
-    for airport in departure_airports:
-        print(f"{year} - {airport}")
-        parse_airport_data(airport, year, unit)
+    for year in range(2001, 2019):
+        for airport in departure_airports:
+            print(f"{year} - {airport}")
+            parse_airport_data(airport, str(year), unit)
