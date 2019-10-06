@@ -3,8 +3,9 @@
 
   // Save off default references
   var d3 = window.d3, topojson = window.topojson;
-
+  var mapScale = 1;
   var defaultOptions = {
+    zoom: 1,
     scope: 'world',
     responsive: false,
     aspectRatio: 0.5625,
@@ -13,6 +14,8 @@
     dataType: 'json',
     data: {},
     done: function() {},
+    onBubbleHoverIn: function() {},
+    onBubbleHoverOut: function() {},
     fills: {
       defaultFill: '#ABDDA4'
     },
@@ -336,6 +339,7 @@
   }
 
   function handleArcs (layer, data, options) {
+    console.log(this)
     var self = this,
         svg = this.svg;
 
@@ -368,13 +372,14 @@
         .style('stroke', function(datum) {
           return val(datum.strokeColor, options.strokeColor, datum);
         })
+        // .style('stroke', options.strokeColor)
         .style('fill', 'none')
         .style('mix-blend-mode', 'screen')
         .style('stroke-width', function(datum) {
             return val(datum.strokeWidth, options.strokeWidth, datum);
         })
         .attr('d', function(datum) {
-
+            console.log(val(datum.strokeColor, options.strokeColor, datum))
             var originXY, destXY;
 
             if (typeof datum.origin === "string") {
@@ -476,7 +481,7 @@
               Thank you Jake Archibald, this is awesome.
               Source: http://jakearchibald.com/2013/animated-line-drawing-svg/
             */
-            var length = this.getTotalLength();
+            var length = this.getTotalLength()*mapScale;
             this.style.transition = this.style.WebkitTransition = 'none';
             this.style.strokeDasharray = length + ' ' + length;
             this.style.strokeDashoffset = length;
@@ -646,6 +651,8 @@
           if (options.popupOnHover) {
             self.updatePopup($this, datum, options, svg);
           }
+          var data = JSON.parse($this.attr('data-info'));
+          self.options.onBubbleHoverIn(self, data.name)
         })
         .on('mouseout', function ( datum ) {
           var $this = d3.select(this);
@@ -659,6 +666,7 @@
           }
 
           d3.selectAll('.datamaps-hoverover').style('display', 'none');
+          self.options.onBubbleHoverOut(self)
         })
 
     bubbles.transition()
@@ -704,7 +712,7 @@
   /**************************************
              Public Functions
   ***************************************/
-
+    
   function Datamap( options ) {
 
     if ( typeof d3 === 'undefined' || typeof topojson === 'undefined' ) {
@@ -756,7 +764,7 @@
     // Save off in a closure
     var self = this;
     var options = self.options;
-
+    //console.log("Yy"+options.zoom)
     // Set projections and paths based on scope
     var pathAndProjection = options.setProjection.apply(this, [options.element, options] );
 
@@ -1189,6 +1197,11 @@
       };
     }
   };
+
+  Datamap.prototype.zoom = function (scale) {
+    mapScale = scale;
+  }
+
 
   // Expose library
   if (typeof exports === 'object') {

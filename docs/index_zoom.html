@@ -4,10 +4,11 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body bgcolor="#182633">
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="libs/d3.v3.5.17.min.js"></script>
+<script src="libs/topojson.3.0.2.min.js"></script>
 <script src="libs/datamaps.world.hires.custom.js"></script>
 <script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
+<script src="libs/defiant.min.js"></script>
 <div id="map"></div>
 <button class="zoom-button" data-zoom="reset">0</button>
 <button class="zoom-button" data-zoom="out">-</button>
@@ -17,6 +18,26 @@
 
 <script>
 var circleRadius = 2
+var airports = ['GCFV', 'GCHI', 'GCLA', 'GCLP', 'GCRR', 'GCTS', 'GCXO', 'GEML', 'LEAL', 'LEAM',
+                'LEAS', 'LEBB', 'LEBL', 'LECO', 'LEGE', 'LEGR', 'LEIB', 'LEJR', 'LELC', 'LEMD',
+                'LEMG', 'LEMH', 'LEPA', 'LEPP', 'LERS', 'LESO', 'LEST', 'LEVC', 'LEVD', 'LEVT',
+                'LEVX', 'LEXJ', 'LEZG', 'LEZL']
+
+var years = ['2018']
+
+var current_airport = 12
+var current_year = 0
+var local_airports = []
+
+var arcs = []
+var bubbles = []
+
+var selected_arc = -1
+var previous_arc_color
+
+function getUrl(airport_n, year_n){
+    return 'https://cbergillos.com/ES-eurostat-data-visualization/data/'+ years[year_n] +'_pax_'+ airports[airport_n] +'.csv'
+}
 
 function parseCSV(input) {
     var rows = input.split(/\r?\n/);
@@ -29,32 +50,32 @@ function parseCSV(input) {
     })
 }
 
-function toArcs(input) {
+function toArcs(input, from_airport) {
     var arcs = []
     input.map(function(row) {
         if(Object.entries(row).length > 1){
             if(row["value"] > 0){
-                var data = {}
-                var from = {"latitude":row["airpt_dep_lat"], "longitude":row["airpt_dep_lon"]}
-                var to = {"latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"]}
-                pax_factor = Math.sqrt(row["value"])/200
-                var options = {strokeWidth: pax_factor, strokeColor: 'rgba(221, 28, 119, '+Math.min(pax_factor/10, 1)+')'}
-                data = {"origin": from, "destination": to, "options": options}
+                var from = {"latitude":from_airport.lat, "longitude":from_airport.lon}
+                var to = {"latitude":row.airpt_lat, "longitude":row.airpt_lon}
+                pax_factor = Math.sqrt(row.value)/200
+                //var options = {}
+                //var data = {"origin": from, "destination": to, "options": options, "name": row.airpt}
+                var data = {"origin": from, "destination": to, "name": row.airpt, strokeColor: 'rgba(221, 28, 119, '+Math.min(0.1+pax_factor/14, 1)+')', strokeWidth: pax_factor}
                 arcs.push(data)
             }
         }
-    })
-    return arcs
+    });
+    return arcs;
 }
 
 function toBubbles(input) {
     var bubbles = []
     input.map(function(row) {
         if(Object.entries(row).length > 1){
-            if(row["value"] > 0){
+            if(row.value > 0){
                 //pax_factor = Math.sqrt(row["pax2018"])/500
-                pax_factor = 1 + Math.pow(row["value"],3/4)/15000
-                data = {radius: circleRadius*pax_factor/prev_scale, "name": row["airpt_arr"], "latitude":row["airpt_arr_lat"], "longitude":row["airpt_arr_lon"], borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(221, 28, 119, 1)', fillOpacity: 1}
+                pax_factor = 1 + Math.pow(row.value,3/4)/15000
+                data = {radius: circleRadius*pax_factor/prev_scale, "name": row.airpt, "latitude":row.airpt_lat, "longitude":row.airpt_lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(221, 28, 119, 1)', fillOpacity: 1, highlightFillColor: 'rgba(255, 255, 255, 0.75'}
                 bubbles.push(data)
             }
         }
@@ -173,7 +194,8 @@ function toBubbles(input) {
     this.d3Zoom
       .translate(translate)
       .scale(scale);
-
+    //console.log(this.d3Zoom.scale())
+    this.datamap.zoom(scale)
     this.datamap.svg.selectAll("g")
       .attr("transform", "translate(" + translate + ")scale(" + scale + ")");
     //<!--this.datamap.svg.selectAll("circle").attr("r", circleRadius/scale);-->
@@ -262,6 +284,8 @@ function toBubbles(input) {
         element: this.$container.get(0),
         projection: 'mercator',
         done: this._handleMapReady.bind(this),
+        onBubbleHoverIn: this._onBubbleHoverIn.bind(this),
+        onBubbleHoverOut: this._onBubbleHoverOut.bind(this),
         geographyConfig: {
             popupOnHover: false,
             highlightOnHover: false,
@@ -272,6 +296,41 @@ function toBubbles(input) {
             defaultFill: '#131522'
         },
     });
+  }
+
+  function updateMapInfo(datamap, arcs2){
+    fetch(getUrl(current_airport, current_year))
+        .then(response => response.text())
+        .then(text => {
+            from_airport = defiant.search(local_airports, '//*[airpt="'+airports[current_airport]+'"]')[0]
+            jsonArray = parseCSV(text)
+            arcs = arcs2 || toArcs(jsonArray, from_airport);
+            datamap.arc(arcs, {greatArc: true,animationSpeed: 600});
+            bubbles = toBubbles(jsonArray)
+            origin = {radius: 5/prev_scale, "name": from_airport.airpt, "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
+            bubbles.push(origin)
+            datamap.bubbles(bubbles)
+    });
+  }
+  Datamap.prototype._onBubbleHoverIn = function(datamap, airport) {
+    for (var i = 0; i < arcs.length; i++) {
+        if (arcs[i].name == airport){
+            //console.log(arcs[i])
+            selected_arc = i;
+            previous_arc_color = arcs[i].strokeColor;
+            var data = Object.assign({}, arcs[i]);
+            data.strokeColor = 'rgba(255, 255, 255, 0.5';
+            arcs[i] = data;
+            break;
+        }
+    }
+    datamap.arc(arcs, {greatArc: true,animationSpeed: 100});
+  }
+  Datamap.prototype._onBubbleHoverOut = function(datamap) {
+    var data = Object.assign({}, arcs[selected_arc]);
+    data.strokeColor = previous_arc_color;
+    arcs[selected_arc] = data
+    datamap.arc(arcs, {greatArc: true,animationSpeed: 100});
   }
 
   Datamap.prototype._handleMapReady = function(datamap) {
@@ -307,23 +366,14 @@ function toBubbles(input) {
             'https://cbergillos.com/ES-eurostat-data-visualization/data/2016_pax_LEBL.csv',
             'https://cbergillos.com/ES-eurostat-data-visualization/data/2017_pax_LEBL.csv',
             'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEBL.csv'];
-    fetch(urls[url_n])
-    .then(response => response.text())
-    .then(text => {
-        jsonArray = parseCSV(text)
-        datamap.arc(toArcs(jsonArray), {greatArc: true,animationSpeed: 600});
-        datamap.bubbles(toBubbles(jsonArray))
-    })
 
-    d3.select("#change-aip").on("click", function(){
-        url_n = (++url_n)%urls.length;
-        fetch(urls[url_n])
-            .then(response => response.text())
-            .then(text => {
-                jsonArray = parseCSV(text)
-                datamap.arc(toArcs(jsonArray), {greatArc: true,animationSpeed: 600});
-                datamap.bubbles(toBubbles(jsonArray))
-            })
+    d3.json("https://cbergillos.com/ES-eurostat-data-visualization/data/local_airports.json", function(error, data) {
+        local_airports = data;
+        updateMapInfo(datamap);
+        d3.select("#change-aip").on("click", function(){
+            current_airport = (++current_airport)%airports.length;
+            updateMapInfo(datamap);
+        });
     });
   }
 
