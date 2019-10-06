@@ -2,9 +2,11 @@
 <script src="libs/d3.v3.5.17.min.js"></script>
 <script src="libs/topojson.3.0.2.min.js"></script>
 <script src="libs/datamaps.world.hires.min.js"></script>
-
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <body bgcolor="#182633">
-    <div id="container" style="position: relative; width: 100%; height: 100%;"></div>
+    <div id="map"></div>
 </body>
 <script>
 
@@ -48,7 +50,7 @@ function toBubbles(input) {
 }
 
 var map = new Datamap({
-    element: document.getElementById('container'),
+    element: document.getElementById('map'),
     geographyConfig: {
         popupOnHover: true,
         highlightOnHover: true,

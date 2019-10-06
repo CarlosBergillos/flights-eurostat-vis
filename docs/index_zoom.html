@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <body bgcolor="#182633">
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>
 <script src="libs/datamaps.world.hires.custom.js"></script>
-<script   src="https://code.jquery.com/jquery-2.2.3.js"   integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4="   crossorigin="anonymous"></script>
-<div id="container" style="position: relative; width: 100%; height: 90vh;"></div>
+<script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
+<div id="map"></div>
 <button class="zoom-button" data-zoom="reset">0</button>
 <button class="zoom-button" data-zoom="out">-</button>
 <button class="zoom-button" data-zoom="in">+</button>
@@ -253,7 +256,7 @@ function toBubbles(input) {
   };
 
   function Datamap() {
-    this.$container = $("#container");
+    this.$container = $("#map");
   	this.instance = new Datamaps({
         scope: 'world',
         element: this.$container.get(0),
@@ -325,5 +328,5 @@ function toBubbles(input) {
   }
 
   new Datamap();
-     </script>
+</script>
 </body>

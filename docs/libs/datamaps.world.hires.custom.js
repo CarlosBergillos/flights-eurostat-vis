@@ -165,7 +165,8 @@
     }
 
     path = d3.geo.path()
-      .projection( projection );
+      .projection(projection);
+    path.projection().precision(0.1);
 
     return {path: path, projection: projection};
   }
