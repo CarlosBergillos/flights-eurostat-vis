@@ -32,11 +32,8 @@ var local_airports = []
 var arcs = []
 var bubbles = []
 
-var selected_arc = -1
-var previous_arc_color
-
 function getUrl(airport_n, year_n){
-    return 'https://cbergillos.com/ES-eurostat-data-visualization/data/'+ years[year_n] +'_pax_'+ airports[airport_n] +'.csv'
+    return 'data/'+ years[year_n] +'_pax_'+ airports[airport_n] +'.csv'
 }
 
 function parseCSV(input) {
@@ -52,6 +49,7 @@ function parseCSV(input) {
 
 function toArcs(input, from_airport) {
     var arcs = []
+    console.log(from_airport)
     input.map(function(row) {
         if(Object.entries(row).length > 1){
             if(row["value"] > 0){
@@ -60,7 +58,7 @@ function toArcs(input, from_airport) {
                 pax_factor = Math.sqrt(row.value)/200
                 //var options = {}
                 //var data = {"origin": from, "destination": to, "options": options, "name": row.airpt}
-                var data = {"origin": from, "destination": to, "name": row.airpt, strokeColor: 'rgba(221, 28, 119, '+Math.min(0.1+pax_factor/14, 1)+')', strokeWidth: pax_factor}
+                var data = {"origin": from, "destination": to, "name": row.airpt, "nameFrom": from_airport.airpt, strokeColor: 'rgba(221, 28, 119, '+Math.min(0.1+pax_factor/14, 1)+')', strokeWidth: pax_factor}
                 arcs.push(data)
             }
         }
@@ -284,8 +282,6 @@ function toBubbles(input) {
         element: this.$container.get(0),
         projection: 'mercator',
         done: this._handleMapReady.bind(this),
-        onBubbleHoverIn: this._onBubbleHoverIn.bind(this),
-        onBubbleHoverOut: this._onBubbleHoverOut.bind(this),
         geographyConfig: {
             popupOnHover: false,
             highlightOnHover: false,
@@ -312,62 +308,14 @@ function toBubbles(input) {
             datamap.bubbles(bubbles)
     });
   }
-  Datamap.prototype._onBubbleHoverIn = function(datamap, airport) {
-    for (var i = 0; i < arcs.length; i++) {
-        if (arcs[i].name == airport){
-            //console.log(arcs[i])
-            selected_arc = i;
-            previous_arc_color = arcs[i].strokeColor;
-            var data = Object.assign({}, arcs[i]);
-            data.strokeColor = 'rgba(255, 255, 255, 0.5';
-            arcs[i] = data;
-            break;
-        }
-    }
-    datamap.arc(arcs, {greatArc: true,animationSpeed: 100});
-  }
-  Datamap.prototype._onBubbleHoverOut = function(datamap) {
-    var data = Object.assign({}, arcs[selected_arc]);
-    data.strokeColor = previous_arc_color;
-    arcs[selected_arc] = data
-    datamap.arc(arcs, {greatArc: true,animationSpeed: 100});
-  }
 
   Datamap.prototype._handleMapReady = function(datamap) {
   	this.zoom = new Zoom({
     	$container: this.$container,
     	datamap: datamap
     });
-    url_n = 0;
-    urls = ['https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEMD.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEPA.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEGE.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LERS.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEAL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_GCXO.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEVC.csv'];
 
-    urls2 = ['https://cbergillos.com/ES-eurostat-data-visualization/data/2001_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2002_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2003_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2004_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2005_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2006_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2007_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2008_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2009_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2010_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2011_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2012_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2013_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2014_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2015_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2016_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2017_pax_LEBL.csv',
-            'https://cbergillos.com/ES-eurostat-data-visualization/data/2018_pax_LEBL.csv'];
-
-    d3.json("https://cbergillos.com/ES-eurostat-data-visualization/data/local_airports.json", function(error, data) {
+    d3.json("data/local_airports.json", function(error, data) {
         local_airports = data;
         updateMapInfo(datamap);
         d3.select("#change-aip").on("click", function(){

@@ -14,8 +14,6 @@
     dataType: 'json',
     data: {},
     done: function() {},
-    onBubbleHoverIn: function() {},
-    onBubbleHoverOut: function() {},
     fills: {
       defaultFill: '#ABDDA4'
     },
@@ -339,7 +337,6 @@
   }
 
   function handleArcs (layer, data, options) {
-    console.log(this)
     var self = this,
         svg = this.svg;
 
@@ -372,14 +369,12 @@
         .style('stroke', function(datum) {
           return val(datum.strokeColor, options.strokeColor, datum);
         })
-        // .style('stroke', options.strokeColor)
         .style('fill', 'none')
         .style('mix-blend-mode', 'screen')
         .style('stroke-width', function(datum) {
             return val(datum.strokeWidth, options.strokeWidth, datum);
         })
         .attr('d', function(datum) {
-            console.log(val(datum.strokeColor, options.strokeColor, datum))
             var originXY, destXY;
 
             if (typeof datum.origin === "string") {
@@ -462,6 +457,39 @@
         .attr('data-info', function(datum) {
           return JSON.stringify(datum);
         })
+        .on('bubblemouseover', function ( datum ) {
+          var $this = d3.select(this);
+          var previousAttributes = {'stroke':  $this.style('stroke')};
+          $this
+          .style('stroke', 'rgba(255, 255, 255, 0.5)')
+          //.transition()
+          //.delay(100)
+          // .style('fill', function(datum) {
+          //   var length = this.getTotalLength()*mapScale;
+          //   this.style.stroke = 'rgba(255, 255, 255, 0.5)';
+          //   this.style.transition = this.style.WebkitTransition = 'none';
+          //   this.style.strokeDasharray = length + ' ' + length;
+          //   this.style.strokeDashoffset = length;
+          //   this.getBoundingClientRect();
+          //   this.style.transition = this.style.WebkitTransition = 'stroke-dashoffset 100ms ease-out';
+          //   this.style.strokeDashoffset = '0';
+          //   return 'none';
+          // }).delay(100).each("end", function(){
+          //   this.style.strokeDasharray = '';
+          //   this.style.opacity = 1;
+          // })
+          .attr('data-previousAttributes', JSON.stringify(previousAttributes));
+        })
+        .on('bubblemouseout', function ( datum ) {
+            console.log("ho9")
+          var $this = d3.select(this);
+          // Reapply previous attributes
+          var previousAttributes = JSON.parse( $this.attr('data-previousAttributes') );
+          for (var attr in previousAttributes) {
+            $this.style(attr, previousAttributes[attr]);
+          }
+
+        })
         .on('mouseover', function ( datum ) {
           var $this = d3.select(this);
 
@@ -489,15 +517,15 @@
             this.style.transition = this.style.WebkitTransition = 'stroke-dashoffset ' + val(datum.animationSpeed, options.animationSpeed, datum) + 'ms ease-out';
             this.style.strokeDashoffset = '0';
             return 'none';
-          }).delay(500).each("end", function(){
+          }).delay(100).each("end", function(){
             this.style.strokeDasharray = '';
+            this.style.opacity = 1;
         })
 
     arcs.exit()
       .transition()
       .style('opacity', 0)
       .remove();
-
   }
   function handleLabels ( layer, options ) {
     var self = this;
@@ -651,8 +679,12 @@
           if (options.popupOnHover) {
             self.updatePopup($this, datum, options, svg);
           }
-          var data = JSON.parse($this.attr('data-info'));
-          self.options.onBubbleHoverIn(self, data.name)
+          var data = JSON.parse($this.attr('data-info')); 
+          d3.selectAll('path.datamaps-arc').each(function(d){
+            if (d.name == data.name || d.nameFrom == data.name){
+                this.dispatchEvent(new CustomEvent('bubblemouseover'));
+            }
+          });
         })
         .on('mouseout', function ( datum ) {
           var $this = d3.select(this);
@@ -666,7 +698,13 @@
           }
 
           d3.selectAll('.datamaps-hoverover').style('display', 'none');
-          self.options.onBubbleHoverOut(self)
+
+          var data = JSON.parse($this.attr('data-info'));
+          d3.selectAll('path.datamaps-arc').each(function(d){
+            if (d.name == data.name || d.nameFrom == data.name){
+                this.dispatchEvent(new CustomEvent('bubblemouseout'));
+            }
+          });
         })
 
     bubbles.transition()
