@@ -24,9 +24,8 @@ def generate_local_airports():
         airpt_lat = airpt_data['latitude_deg']
         airpt_lon = airpt_data['longitude_deg']
         airpt_name = airpt_data['name']
-        airpt_iata = airpt_data['iata_code']
         pax_sum_2018 =  df[(df['airpt_dep']==airpt)&(df['tra_meas']=="PAS_CRD")]['2018'].sum()
-        row = {'airpt':airpt, 'name':airpt_name, 'iata':airpt_iata, 'lat': airpt_lat, 'lon': airpt_lon, 'rank': pax_sum_2018}
+        row = {'airpt':airpt, 'name':airpt_name, 'lat': airpt_lat, 'lon': airpt_lon, 'rank': pax_sum_2018}
         local_airports.append(row)
 
     local_airports = pd.DataFrame(local_airports)

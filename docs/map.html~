@@ -1,4 +1,9 @@
 <div id="map"></div>
+<!--<button class="zoom-button" data-zoom="reset">0</button>-->
+<!--<button class="zoom-button" data-zoom="out">-</button>-->
+<!--<button class="zoom-button" data-zoom="in">+</button>-->
+<!--<button class="overlay-button" id="change-aip">Change Aip</button>-->
+<!--<div id="zoom-info"></div>-->
 
 <script>
 var circleRadius = 2

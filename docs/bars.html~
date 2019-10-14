@@ -113,7 +113,7 @@ function drawBarplot(data){
 
     bars = svg.selectAll("rect").data(data); 
     // Bars
-
+  
     bars.enter()
       .append("rect")
       .merge(bars)
@@ -137,26 +137,23 @@ function drawBarplot(data){
           });
 
     var avgLine;
-    var axisY = d3v4.axisLeft(y).ticks(4);
-    var axisX = d3v4.axisBottom(x);
-
     if (first){
       avgLine = svg.append("path");
       //y axis
       svg.append("g")
-        .attr("class", "y axis axisCustom")
-        .call(axisY);
+        .attr("class", "y axis")
+        .call(d3v4.axisLeft(y));
       //x axis
       svg.append("g")
-        .attr("class", "x axis axisCustom")
+        .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(axisX);
+        .call(d3v4.axisBottom(x));
 
       first = false;
     }else{
       avgLine = svg.select("path");
-      svg.selectAll("g.y.axis").call(axisY);
-      svg.selectAll("g.x.axis").call(axisX);
+      svg.selectAll("g.y.axis").call(d3v4.axisLeft(y));
+      svg.selectAll("g.x.axis").call(d3v4.axisBottom(x));
     }
 
     avgLine
@@ -165,7 +162,7 @@ function drawBarplot(data){
           .attr("transform", "translate("+barWidth+", 0)")
           .attr("fill", "none")
           .style("mix-blend-mode", 'screen')
-          .attr("stroke-width", 4)
+          .attr("stroke-width", 5)
           .attr("stroke-opacity", 0.75)
           .attr("stroke-linecap", 'round')
           .attr("stroke", "#ff6732");
@@ -175,8 +172,11 @@ function parseBarplotInfo(d){
   return { date : d3v4.timeParse("%YM%m")(d.timeperiod), value : +d.pax }
 }
 
+var data;
+
 function updateBarsInfo(airport){
-  d3v4.csv("data/evolution/"+airport+".csv", parseBarplotInfo, drawBarplot);
+  //clearSvg();
+  d3v4.csv("data/evolution/"+airport+".csv", parseBarplotInfo, function(d){data = d; drawBarplot(data)});
 }
 
 updateBarsInfo(current_airport)
