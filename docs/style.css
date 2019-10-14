@@ -34,7 +34,7 @@ html, body {
   box-sizing: border-box;
   margin: 0;
   padding-left: 20px;
-  opacity: 0.95;
+  opacity: 0.9;
   /*margin-left: 310px;*/
 }
 
@@ -58,6 +58,7 @@ html, body {
   fill: #ff6732;
   mix-blend-mode: screen;
   font-weight: bold;
+  /*font-size: 12px;*/
   opacity: 0.75;
 } 
 
