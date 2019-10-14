@@ -66,18 +66,7 @@
       animationSpeed: 600,
       popupOnHover: false,
       popupTemplate: function(geography, data) {
-        // Case with latitude and longitude
-        if ( ( data.origin && data.destination ) && data.origin.latitude && data.origin.longitude && data.destination.latitude && data.destination.longitude ) {
-          return '<div class="hoverinfo"><strong>Arc</strong><br>Origin: ' + JSON.stringify(data.origin) + '<br>Destination: ' + JSON.stringify(data.destination) + '</div>';
-        }
-        // Case with only country name
-        else if ( data.origin && data.destination ) {
-          return '<div class="hoverinfo"><strong>Arc</strong><br>' + data.origin + ' -> ' + data.destination + '</div>';
-        }
-        // Missing information
-        else {
-          return '';
-        }
+        return '<div class="hoverinfo"><strong>' + data.name + '</strong><br>From '+data.nameFrom+'</div>';
       }
     }
   };
@@ -377,71 +366,8 @@
         .attr('d', function(datum) {
             var originXY, destXY;
 
-            if (typeof datum.origin === "string") {
-              switch (datum.origin) {
-                   case "CAN":
-                       originXY = self.latLngToXY(56.624472, -114.665293);
-                       break;
-                   case "CHL":
-                       originXY = self.latLngToXY(-33.448890, -70.669265);
-                       break;
-                   case "IDN":
-                       originXY = self.latLngToXY(-6.208763, 106.845599);
-                       break;
-                   case "JPN":
-                       originXY = self.latLngToXY(35.689487, 139.691706);
-                       break;
-                   case "MYS":
-                       originXY = self.latLngToXY(3.139003, 101.686855);
-                       break;
-                   case "NOR":
-                       originXY = self.latLngToXY(59.913869, 10.752245);
-                       break;
-                   case "USA":
-                       originXY = self.latLngToXY(41.140276, -100.760145);
-                       break;
-                   case "VNM":
-                       originXY = self.latLngToXY(21.027764, 105.834160);
-                       break;
-                   default:
-                       originXY = self.path.centroid(svg.select('path.' + datum.origin).data()[0]);
-               }
-            } else {
-              originXY = self.latLngToXY(val(datum.origin.latitude, datum), val(datum.origin.longitude, datum))
-            }
-
-            if (typeof datum.destination === 'string') {
-              switch (datum.destination) {
-                     case "CAN":
-                        destXY = self.latLngToXY(56.624472, -114.665293);
-                        break;
-                    case "CHL":
-                        destXY = self.latLngToXY(-33.448890, -70.669265);
-                        break;
-                    case "IDN":
-                        destXY = self.latLngToXY(-6.208763, 106.845599);
-                        break;
-                    case "JPN":
-                        destXY = self.latLngToXY(35.689487, 139.691706);
-                        break;
-                    case "MYS":
-                        destXY = self.latLngToXY(3.139003, 101.686855);
-                        break;
-                    case "NOR":
-                        destXY = self.latLngToXY(59.913869, 10.752245);
-                        break;
-                    case "USA":
-                        destXY = self.latLngToXY(41.140276, -100.760145);
-                        break;
-                    case "VNM":
-                        destXY = self.latLngToXY(21.027764, 105.834160);
-                        break;
-                    default:
-                        destXY = self.path.centroid(svg.select('path.' + datum.destination).data()[0]);
-              }
-            } else {
-              destXY = self.latLngToXY(val(datum.destination.latitude, datum), val(datum.destination.longitude, datum));
-            }
+            originXY = self.latLngToXY(val(datum.origin.latitude, datum), val(datum.origin.longitude, datum))
+            destXY = self.latLngToXY(val(datum.destination.latitude, datum), val(datum.destination.longitude, datum));
             var midXY = [ (originXY[0] + destXY[0]) / 2, (originXY[1] + destXY[1]) / 2];
             if (options.greatArc) {
                   // TODO: Move this to inside `if` clause when setting attr `d`
@@ -457,50 +383,26 @@
         .attr('data-info', function(datum) {
           return JSON.stringify(datum);
         })
-        .on('bubblemouseover', function ( datum ) {
+        .on('bubblemouseover', function ( datum ) {})
+        .on('bubblemouseout', function ( datum ) {})
+        .on('mouseover', function ( datum ) {
           var $this = d3.select(this);
           var previousAttributes = {'stroke':  $this.style('stroke'),
                                     'mix-blend-mode': $this.style('mix-blend-mode')};
           $this
           .style('stroke', 'rgba(255, 255, 255, 0.75)')
           .style('mix-blend-mode', 'normal')
-          //.transition()
-          //.delay(100)
-          // .style('fill', function(datum) {
-          //   var length = this.getTotalLength()*mapScale;
-          //   this.style.stroke = 'rgba(255, 255, 255, 0.5)';
-          //   this.style.transition = this.style.WebkitTransition = 'none';
-          //   this.style.strokeDasharray = length + ' ' + length;
-          //   this.style.strokeDashoffset = length;
-          //   this.getBoundingClientRect();
-          //   this.style.transition = this.style.WebkitTransition = 'stroke-dashoffset 100ms ease-out';
-          //   this.style.strokeDashoffset = '0';
-          //   return 'none';
-          // }).delay(100).each("end", function(){
-          //   this.style.strokeDasharray = '';
-          //   this.style.opacity = 1;
-          // })
           .attr('data-previousAttributes', JSON.stringify(previousAttributes));
+
+          self.updatePopup($this, datum, options, svg);
         })
-        .on('bubblemouseout', function ( datum ) {
-            console.log("ho9")
+        .on('mouseout', function ( datum ) {
           var $this = d3.select(this);
           // Reapply previous attributes
           var previousAttributes = JSON.parse( $this.attr('data-previousAttributes') );
           for (var attr in previousAttributes) {
             $this.style(attr, previousAttributes[attr]);
           }
-
-        })
-        .on('mouseover', function ( datum ) {
-          var $this = d3.select(this);
-
-          if (options.popupOnHover) {
-            self.updatePopup($this, datum, options, svg);
-          }
-        })
-        .on('mouseout', function ( datum ) {
-          var $this = d3.select(this);
 
           d3.selectAll('.datamaps-hoverover').style('display', 'none');
         })
@@ -678,13 +580,13 @@
               .attr('data-previousAttributes', JSON.stringify(previousAttributes));
           }
 
-          if (options.popupOnHover) {
-            self.updatePopup($this, datum, options, svg);
-          }
+          // self.updatePopup($this, datum, options, svg);
+
           var data = JSON.parse($this.attr('data-info')); 
           d3.selectAll('path.datamaps-arc').each(function(d){
-            if (d.name == data.name || d.nameFrom == data.name){
-                this.dispatchEvent(new CustomEvent('bubblemouseover'));
+            // if (d.name == data.name || d.nameFrom == data.name){
+            if (d.name == data.name){
+                this.dispatchEvent(new CustomEvent('mouseover'));
             }
           });
         })
@@ -699,12 +601,12 @@
             }
           }
 
-          d3.selectAll('.datamaps-hoverover').style('display', 'none');
+          // d3.selectAll('.datamaps-hoverover').style('display', 'none');
 
           var data = JSON.parse($this.attr('data-info'));
           d3.selectAll('path.datamaps-arc').each(function(d){
             if (d.name == data.name || d.nameFrom == data.name){
-                this.dispatchEvent(new CustomEvent('bubblemouseout'));
+                this.dispatchEvent(new CustomEvent('mouseout'));
             }
           });
         })
@@ -1185,19 +1087,19 @@
 
   Datamap.prototype.updatePopup = function (element, d, options) {
     var self = this;
+    var obj = d3.select(self.svg[0][0].parentNode).select('.datamaps-hoverover')
+    obj.html(function() {
+      var data = JSON.parse(element.attr('data-info'));
+      try {
+        return options.popupTemplate(d, data);
+      } catch (e) {
+        return "";
+      }
+    });
     element.on('mousemove', null);
     element.on('mousemove', function() {
       var position = d3.mouse(self.options.element);
-      d3.select(self.svg[0][0].parentNode).select('.datamaps-hoverover')
-        .style('top', ( (position[1] + 30)) + "px")
-        .html(function() {
-          var data = JSON.parse(element.attr('data-info'));
-          try {
-            return options.popupTemplate(d, data);
-          } catch (e) {
-            return "";
-          }
-        })
+      obj.style('top', ( (position[1] + 30)) + "px")
         .style('left', ( position[0]) + "px");
     });
 

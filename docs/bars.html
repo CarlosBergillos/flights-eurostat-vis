@@ -96,29 +96,28 @@ var svg = d3v4.select("#my_dataviz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-// Parse the Data
-d3v4.csv("data/evolution/LEBL.csv", 
-  function(d){
-    return { date : d3v4.timeParse("%YM%m")(d.timeperiod), value : +d.pax }
-  },
+var first = true;
 
-function(data) {
-  // X axis
-  var x = d3v4.scaleTime()
-    .range([ 0, width ])
-    .domain(d3v4.extent(data, function(d) { return d.date; }));
+function drawBarplot(data){
+// X axis
+    var x = d3v4.scaleTime()
+      .range([ 0, width ])
+      .domain(d3v4.extent(data, function(d) { return d.date; }));
 
-  // Add Y axis
-  var y = d3v4.scaleLinear()
-    .domain([0, d3v4.max(data, function(d) { return d.value; })])
-    .range([ height, 0]);
+    // Add Y axis
+    var y = d3v4.scaleLinear()
+      .domain([0, d3v4.max(data, function(d) { return d.value; })])
+      .range([ height, 0]);
 
-  barWidth = width/data.length * 0.8;
-  // Bars
-  svg.selectAll("mybar")
-    .data(data)
-    .enter()
-    .append("rect")
+    barWidth = width/data.length * 0.8;
+
+    bars = svg.selectAll("rect").data(data); 
+    // Bars
+  
+    bars.enter()
+      .append("rect")
+      .merge(bars)
+      .transition().duration(!first * 500)
       .attr("x", function(d) { return x(d.date); })
       .attr("y", function(d) { return y(d.value); })
       .attr("width", barWidth)
@@ -127,35 +126,59 @@ function(data) {
       //.attr("stroke-width", 0)
       .attr("fill", "#6b7a8a");
 
-  var line = d3v4.line()
-        .x(function(d, i) {
-          return x(d.date);
-        })
-        .y(function(d, i) {
-          return y(d.value);
-        });
+    bars.exit().remove();
 
-  svg.append("path")
-        .datum(data)
-        .attr("d", line.curve(curveNMoveAge.N(12)))
-        .attr("transform", "translate("+barWidth+", 0)")
-        .attr("fill", "none")
-        .style("mix-blend-mode", 'screen')
-        .attr("stroke-width", 5)
-        .attr("stroke-opacity", 0.75)
-        .attr("stroke-linecap", 'round')
-        .attr("stroke", "#ff6732");
+    var line = d3v4.line()
+          .x(function(d, i) {
+            return x(d.date);
+          })
+          .y(function(d, i) {
+            return y(d.value);
+          });
 
-  //y axis
-  svg.append("g")
-    .call(d3v4.axisLeft(y));
-    //.style('fill', 'darkOrange')
-  
-  //x axis
-  svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3v4.axisBottom(x));
+    var avgLine;
+    if (first){
+      avgLine = svg.append("path");
+      //y axis
+      svg.append("g")
+        .attr("class", "y axis")
+        .call(d3v4.axisLeft(y));
+      //x axis
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3v4.axisBottom(x));
 
-})
+      first = false;
+    }else{
+      avgLine = svg.select("path");
+      svg.selectAll("g.y.axis").call(d3v4.axisLeft(y));
+      svg.selectAll("g.x.axis").call(d3v4.axisBottom(x));
+    }
+
+    avgLine
+          .datum(data)
+          .attr("d", line.curve(curveNMoveAge.N(12)))
+          .attr("transform", "translate("+barWidth+", 0)")
+          .attr("fill", "none")
+          .style("mix-blend-mode", 'screen')
+          .attr("stroke-width", 5)
+          .attr("stroke-opacity", 0.75)
+          .attr("stroke-linecap", 'round')
+          .attr("stroke", "#ff6732");
+}
+
+function parseBarplotInfo(d){
+  return { date : d3v4.timeParse("%YM%m")(d.timeperiod), value : +d.pax }
+}
+
+var data;
+
+function updateBarsInfo(airport){
+  //clearSvg();
+  d3v4.csv("data/evolution/"+airport+".csv", parseBarplotInfo, function(d){data = d; drawBarplot(data)});
+}
+
+updateBarsInfo(current_airport)
 
 </script>

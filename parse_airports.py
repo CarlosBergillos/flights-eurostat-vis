@@ -24,11 +24,13 @@ def generate_local_airports():
         airpt_lat = airpt_data['latitude_deg']
         airpt_lon = airpt_data['longitude_deg']
         airpt_name = airpt_data['name']
-        row = {'airpt':airpt, 'name':airpt_name, 'lat': airpt_lat, 'lon': airpt_lon}
+        pax_sum_2018 =  df[(df['airpt_dep']==airpt)&(df['tra_meas']=="PAS_CRD")]['2018'].sum()
+        row = {'airpt':airpt, 'name':airpt_name, 'lat': airpt_lat, 'lon': airpt_lon, 'rank': pax_sum_2018}
         local_airports.append(row)
 
     local_airports = pd.DataFrame(local_airports)
-    # print(local_airports)
+    local_airports = local_airports.sort_values(by=['rank'], ascending=False)
+    local_airports = local_airports.drop(columns=['rank'])
     with open(file_local_airports_out, 'w', encoding='utf-8') as file:
         local_airports.to_json(file, orient='records', force_ascii=False)
 

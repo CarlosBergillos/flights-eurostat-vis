@@ -3,15 +3,24 @@
 }
 html, body {
   height: 100%;
+  width: 100%;  
+  margin: 0;
+  background-color: #182633;
 }
+
+.main {
+  /*height: 100%;*/
+  /*width: 100%;*/
+  margin-left: 310px; /* Same as the width of the sidebar */
+  padding: 0px;
+}
+
 .wrapper {
   min-height: 100%;
   height: auto !important;
   height: 100%;
   margin: 0 auto -240px; /* the bottom margin is the negative value of the footer's height */
-  /*z-index: -1;*/
   position: relative;
-  /*pointer-events: none;*/
 }
 .lower, .push{
   height: 240px; /* .push must be the same height as .footer */
@@ -23,21 +32,33 @@ html, body {
   border-top: 4px solid;
   border-top-color: #404e5d;
   box-sizing: border-box;
-  /*pointer-events: none;*/
-  /*z-index: 200;*/
+  margin: 0;
+  padding-left: 20px;
+  /*margin-left: 310px;*/
 }
 
 #map {
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   position: relative;
   top:0;
   left:0;
-  /*z-index: -1;*/
-  /*z-index: 10000;*/
-  background-color: #182633;
 }
+
+/*.sidenav {*/
+/*  height: 100%; /* Full-height: remove this if you want "auto" height */*/
+/*  width: 160px; /* Set the width of the sidebar */*/
+/*  position: fixed; /* Fixed Sidebar (stay in place on scroll) */*/
+/*  z-index: 1; /* Stay on top */*/
+/*  top: 0; /* Stay at the top */*/
+/*  left: 0;*/
+/*  background-color: #111;*/
+/*  overflow-x: hidden; /* Disable horizontal scroll */*/
+/*  padding-top: 20px;*/
+/*}*/
+
 @media screen and (orientation:portrait) { height: 100vh;
   width: 100vw; }
 @media screen and (orientation:landscape) {height: 100vh;
   width: 100vw; }
+

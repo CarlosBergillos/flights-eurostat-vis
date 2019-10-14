@@ -15,15 +15,13 @@ var airports = ['GCFV', 'GCHI', 'GCLA', 'GCLP', 'GCRR', 'GCTS', 'GCXO', 'GEML', 
 var years = [   '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009',
                 '2010', '2012', '2013', '2014', '2015', '2016', '2017', '2018']
 
-var current_airport = 16
-var current_year = 16
 var local_airports = []
-
+var this_datamap
 var arcs = []
 var bubbles = []
 
-function getUrl(airport_n, year_n){
-    return 'data/'+ years[year_n] +'_pax_'+ airports[airport_n] +'.csv'
+function getUrl(airport, year){
+    return 'data/'+ year +'_pax_'+ airport +'.csv'
 }
 
 function parseCSV(input) {
@@ -283,11 +281,11 @@ function toBubbles(input) {
     });
   }
 
-  function updateMapInfo(datamap, animate){
-    fetch(getUrl(current_airport, current_year))
+  function updateMapInfo(datamap, animate, airport, year){
+    fetch(getUrl(airport, year))
         .then(response => response.text())
         .then(text => {
-            from_airport = defiant.search(local_airports, '//*[airpt="'+airports[current_airport]+'"]')[0]
+            from_airport = defiant.search(local_airports, '//*[airpt="'+airport+'"]')[0]
             jsonArray = parseCSV(text)
             arcs = toArcs(jsonArray, from_airport);
             datamap.arc(arcs, {greatArc: true, animationSpeed: 600*animate});
@@ -303,14 +301,14 @@ function toBubbles(input) {
     	$container: this.$container,
     	datamap: datamap
     });
-
+    this_datamap = datamap;
     d3v3.json("data/local_airports.json", function(error, data) {
         local_airports = data;
-        updateMapInfo(datamap);
+        updateMapInfo(datamap, true, current_airport, current_year);
         d3v3.select("#change-aip").on("click", function(){
-            current_airport = (++current_airport)%airports.length;
+            //current_airport = (++current_airport)%airports.length;
             //current_year = (++current_year)%years.length;
-            updateMapInfo(datamap, true);
+            //updateMapInfo(datamap, true, current_airport, current_year);
         });
     });
   }
