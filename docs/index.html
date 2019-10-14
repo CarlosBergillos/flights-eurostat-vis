@@ -43,7 +43,7 @@
         .attr('class','collection-item blue-grey-text text-darken-2')
         .attr('href','#!')
         //.html(function(d){return "<b>"+d.name+"</b><br>"+d.iata+' - '+d.airpt;})
-        .html(function(d){return "<b>"+d.name+"</b><br>"+d.iataithu;})
+        .html(function(d){return "<b>"+d.name+"</b><br>"+d.iata;})
         .each(function(d){
           var $this = d3v4.select(this);
           if(d.airpt==current_airport)
