@@ -459,11 +459,9 @@
         })
         .on('bubblemouseover', function ( datum ) {
           var $this = d3.select(this);
-          var previousAttributes = {'stroke':  $this.style('stroke'),
-                                    'mix-blend-mode': $this.style('mix-blend-mode')};
+          var previousAttributes = {'stroke':  $this.style('stroke')};
           $this
-          .style('stroke', 'rgba(255, 255, 255, 0.75)')
-          .style('mix-blend-mode', 'normal')
+          .style('stroke', 'rgba(255, 255, 255, 0.5)')
           //.transition()
           //.delay(100)
           // .style('fill', function(datum) {

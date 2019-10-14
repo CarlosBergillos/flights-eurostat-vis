@@ -1,0 +1,7 @@
+<body>
+    <div class="wrapper">content here!
+         <div class="push"></div>
+    </div>
+
+    <div class="footer">footer content</div>
+</body>

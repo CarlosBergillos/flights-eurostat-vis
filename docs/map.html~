@@ -1,26 +1,20 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<head>
-   <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body bgcolor="#182633">
-<script src="libs/d3.v3.5.17.min.js"></script>
-<script src="libs/topojson.3.0.2.min.js"></script>
-<script src="libs/datamaps.world.hires.custom.js"></script>
-<script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
-<script src="libs/defiant.min.js"></script>
-<script>
-  d3v3 = d3
-  window.d3 = null
-</script>
-
-
+<!--<head>-->
+<!--    <link rel="stylesheet" type="text/css" href="style.css">-->
+<!--</head>-->
+<!--<body bgcolor="#182633">-->
+<!--<script src="libs/d3.v3.5.17.min.js"></script>-->
+<!--<script src="libs/topojson.3.0.2.min.js"></script>-->
+<!--<script src="libs/datamaps.world.hires.custom.js"></script>-->
+<!--<script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>-->
+<!--<script src="libs/defiant.min.js"></script>-->
 <div id="map"></div>
-<!--<button class="zoom-button" data-zoom="reset">0</button>-->
-<!--<button class="zoom-button" data-zoom="out">-</button>-->
-<!--<button class="zoom-button" data-zoom="in">+</button>-->
-<!--<button id="change-aip">Change Aip</button>-->
-<!--<div id="zoom-info"></div>-->
+<button class="zoom-button" data-zoom="reset">0</button>
+<button class="zoom-button" data-zoom="out">-</button>
+<button class="zoom-button" data-zoom="in">+</button>
+<button id="change-aip">Change Aip</button>
+<div id="zoom-info"></div>
 
 <script>
 var circleRadius = 2

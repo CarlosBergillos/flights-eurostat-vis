@@ -1,0 +1,153 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+
+<script>
+
+function NMoveAvg(context, N) {
+      this._context = context;
+      this._points = {
+        x: [],
+        y: []
+      };
+      this._N = N;
+    }
+
+    NMoveAvg.prototype = {
+      areaStart: function() {
+        this._line = 0;
+      },
+      areaEnd: function() {
+        this._line = NaN;
+      },
+      lineStart: function() {
+        this._point = 0;
+      },
+      lineEnd: function() {
+        if (this._line || (this._line !== 0 && this._point === 1)) this._context.closePath();
+        this._line = 1 - this._line;
+      },
+      point: function(x, y) {
+        x = +x, y = +y;
+
+        this._points.x.push(x);
+        this._points.y.push(y);
+
+        if (this._points.x.length < this._N) return;
+        //var aX = this._points.x.reduce(function(a, b) {
+            //return a + b;
+          //}, 0) / this._N;
+        var aX = x;
+        var aY = this._points.y.reduce(function(a, b) {
+            return a + b;
+          }, 0) / this._N;
+
+        this._points.x.shift();
+        this._points.y.shift();
+        switch (this._point) {
+          case 0:
+            this._point = 1;
+            this._line ? this._context.lineTo(aX, aY) : this._context.moveTo(aX, aY);
+            break;
+          case 1:
+            this._point = 2; // proceed
+          default:
+            this._context.lineTo(aX, aY);
+            break;
+        }
+      }
+    };
+
+    var curveNMoveAge = (function custom(N) {
+
+      function nMoveAge(context) {
+        return new NMoveAvg(context, N);
+      }
+
+      nMoveAge.N = function(N) {
+        return custom(+N);
+      };
+
+      return nMoveAge;
+    })(0);
+
+
+// set the dimensions and margins of the graph
+var margin = {top: 30, right: 30, bottom: 70, left: 60},
+    width = 1000 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+// Parse the Data
+d3.csv("data/evolution/LEBL.csv", 
+  function(d){
+    return { date : d3.timeParse("%YM%m")(d.timeperiod), value : +d.pax }
+  },
+
+function(data) {
+  // X axis
+  var x = d3.scaleTime()
+    .range([ 0, width ])
+    .domain(d3.extent(data, function(d) { return d.date; }));
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, d3.max(data, function(d) { return d.value; })])
+    .range([ height, 0]);
+
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+  barWidth = width/data.length;
+  // Bars
+  svg.selectAll("mybar")
+    .data(data)
+    .enter()
+    .append("rect")
+      .attr("x", function(d) { return x(d.date); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("width", barWidth)
+      .attr("height", function(d) { return height - y(d.value); })
+      .attr("stroke", "#69b3a2")
+      .attr("stroke-width", 1.5)
+      .attr("fill", "#cce5df")
+
+  var line = d3.line()
+        .x(function(d, i) {
+          return x(d.date);
+        })
+        .y(function(d, i) {
+          return y(d.value);
+        });
+
+  svg.append("path")
+        .datum(data)
+        .attr("d", line.curve(curveNMoveAge.N(12)))
+        .attr("transform", "translate("+barWidth+", 0)")
+        .attr("fill", "none")
+        .attr("stroke-width", 6)
+        .attr("stroke-opacity", 0.5)
+        .attr("stroke-linecap", 'round')
+        .attr("stroke", "steelblue");
+
+})
+
+</script>

@@ -66,7 +66,7 @@ def parse_airport_data(airport, year, unit):
         destinations_data.at[i,'airpt_lat'] = row_airpt['latitude_deg']
         destinations_data.at[i,'airpt_lon'] = row_airpt['longitude_deg']
 
-    destinations_data.to_csv(file_out, index=None, header=True, sep=',')
+    destinations_data.to_csv(file_out, index=True, header=True, sep=',')
 
 if __name__ == '__main__':
     generate_local_airports()
