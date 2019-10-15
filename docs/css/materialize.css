@@ -7709,14 +7709,14 @@ input[type=range]::-ms-thumb {
   left: auto;
 }
 
-@media only screen and (max-width: 992px) {
-.sidenav.sidenav-fixed {
-  -webkit-transform: translateX(-105%);
-          transform: translateX(-105%);
-}
+/*@media only screen and (max-width: 992px) {*/
+/*.sidenav.sidenav-fixed {*/
+/*  -webkit-transform: translateX(-105%);*/
+/*          transform: translateX(-105%);*/
+/*}*/
 .sidenav.sidenav-fixed.right-aligned {
-  -webkit-transform: translateX(105%);
-          transform: translateX(105%);
+  -webkit-transform: translateX(100%);
+          transform: translateX(100%);
 }
 .sidenav > a {
   padding: 0 16px;
