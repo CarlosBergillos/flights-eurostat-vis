@@ -1,5 +1,5 @@
-airpt,value,airpt_lat,airpt_lon
-LEMD,191152,40.471926,-3.56264
-LEBL,63689,41.2971,2.0784599999999998
-EGSS,30310,51.8849983215,0.23499999940400002
-LIRA,29301,41.7994,12.5949
+airpt,value,airpt_iata,airpt_lat,airpt_lon,airpt_name
+LEMD,191152,MAD,40.471926,-3.56264,Adolfo Suárez Madrid–Barajas Airport
+LEBL,63689,BCN,41.2971,2.0784599999999998,Barcelona International Airport
+EGSS,30310,STN,51.8849983215,0.23499999940400002,London Stansted Airport
+LIRA,29301,CIA,41.7994,12.5949,Ciampino–G. B. Pastine International Airport

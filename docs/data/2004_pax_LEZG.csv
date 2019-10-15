@@ -1,4 +1,4 @@
-airpt,value,airpt_lat,airpt_lon
-LEPA,53395,39.551700591999996,2.73881006241
-GCTS,47921,28.044500351,-16.5725002289
-LEMD,22734,40.471926,-3.56264
+airpt,value,airpt_iata,airpt_lat,airpt_lon,airpt_name
+LEPA,53395,PMI,39.551700591999996,2.73881006241,Palma De Mallorca Airport
+GCTS,47921,TFS,28.044500351,-16.5725002289,Tenerife South Airport
+LEMD,22734,MAD,40.471926,-3.56264,Adolfo Suárez Madrid–Barajas Airport

@@ -45,7 +45,7 @@
         popupOnHover: true,
         radius: null,
         popupTemplate: function(geography, data) {
-          return '<div class="hoverinfo"><strong>' + data.name + '</strong></div>';
+          return '<div class="card"><div class="card-content" style="padding: 8px;"><b>' + data.nameTo + '</b><br><p>'+data.iataFrom+'−'+data.iataTo+'</p><p>'+d3.format(".2s")(data.value)+' pax</p></div></div>';
         },
         fillColor: '#DD1C77',
         fillOpacity: 0.75,
@@ -66,7 +66,7 @@
       animationSpeed: 600,
       popupOnHover: false,
       popupTemplate: function(geography, data) {
-        return '<div class="hoverinfo"><strong>' + data.name + '</strong><br>From '+data.nameFrom+'</div>';
+        return '<div class="card"><div class="card-content" style="padding: 8px;"><b>' + data.nameTo + '</b><br><p>'+data.iataFrom+'−'+data.iataTo+'</p><p>'+d3.format(".2s")(data.value)+' pax</p></div></div>';
       }
     }
   };
@@ -580,12 +580,12 @@
               .attr('data-previousAttributes', JSON.stringify(previousAttributes));
           }
 
-          // self.updatePopup($this, datum, options, svg);
+          self.updatePopup($this, datum, options, svg);
 
           var data = JSON.parse($this.attr('data-info')); 
           d3.selectAll('path.datamaps-arc').each(function(d){
             // if (d.name == data.name || d.nameFrom == data.name){
-            if (d.name == data.name){
+            if (d.icaoTo == data.icaoTo){
                 this.dispatchEvent(new CustomEvent('mouseover'));
             }
           });

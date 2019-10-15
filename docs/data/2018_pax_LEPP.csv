@@ -1,3 +1,3 @@
-airpt,value,airpt_lat,airpt_lon
-LEMD,152328,40.471926,-3.56264
-EDDF,38680,50.033333,8.570556
+airpt,value,airpt_iata,airpt_lat,airpt_lon,airpt_name
+LEMD,152328,MAD,40.471926,-3.56264,Adolfo Suárez Madrid–Barajas Airport
+EDDF,38680,FRA,50.033333,8.570556,Frankfurt am Main Airport

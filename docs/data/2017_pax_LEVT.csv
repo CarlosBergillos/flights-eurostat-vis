@@ -1,3 +1,3 @@
-airpt,value,airpt_lat,airpt_lon
-GCTS,26918,28.044500351,-16.5725002289
-LIME,26789,45.673901,9.70417
+airpt,value,airpt_iata,airpt_lat,airpt_lon,airpt_name
+GCTS,26918,TFS,28.044500351,-16.5725002289,Tenerife South Airport
+LIME,26789,BGY,45.673901,9.70417,Il Caravaggio International Airport

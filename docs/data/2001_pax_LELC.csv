@@ -1,4 +1,4 @@
-airpt,value,airpt_lat,airpt_lon
-EGKK,58638,51.148102,-0.190278
-EGSS,48650,51.8849983215,0.23499999940400002
-LEMD,40985,40.471926,-3.56264
+airpt,value,airpt_iata,airpt_lat,airpt_lon,airpt_name
+EGKK,58638,LGW,51.148102,-0.190278,London Gatwick Airport
+EGSS,48650,STN,51.8849983215,0.23499999940400002,London Stansted Airport
+LEMD,40985,MAD,40.471926,-3.56264,Adolfo Suárez Madrid–Barajas Airport

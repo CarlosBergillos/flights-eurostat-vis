@@ -1,4 +1,4 @@
-airpt,value,airpt_lat,airpt_lon
-LEBL,326274,41.2971,2.0784599999999998
-LEMD,163713,40.471926,-3.56264
-LEPA,109173,39.551700591999996,2.73881006241
+airpt,value,airpt_iata,airpt_lat,airpt_lon,airpt_name
+LEBL,326274,BCN,41.2971,2.0784599999999998,Barcelona International Airport
+LEMD,163713,MAD,40.471926,-3.56264,Adolfo Suárez Madrid–Barajas Airport
+LEPA,109173,PMI,39.551700591999996,2.73881006241,Palma De Mallorca Airport

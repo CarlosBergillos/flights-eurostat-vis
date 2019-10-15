@@ -83,7 +83,7 @@ function NMoveAvg(context, N) {
 var divWidth = $("#lowerContent").width();
 var divHeight = $("#lowerContent").height();
 
-var margin = {top: 20, right: 30, bottom: 30, left: 60},
+var margin = {top: 20, right: 60, bottom: 30, left: 30},
     width = divWidth - margin.left - margin.right,
     height = divHeight - margin.top - margin.bottom;
 
@@ -97,9 +97,11 @@ var svg = d3v4.select("#my_dataviz")
           "translate(" + margin.left + "," + margin.top + ")");
 
 var first = true;
+var avgLine, currYearRect, currYearLineL, currYearLineR;
 
 function drawBarplot(data){
-    maxValue = d3v4.max(data, function(d) { return d.value; });
+    maxValue = d3v4.max(data, function(d) { return d.value; }) * 1.1;
+
     // X axis
     var x = d3v4.scaleTime()
       .range([ 0, width ])
@@ -112,13 +114,14 @@ function drawBarplot(data){
 
     barWidth = width/data.length * 0.8;
 
-    bars = svg.selectAll("rect").data(data); 
+    bars = svg.selectAll("rect.barplot").data(data); 
     // Bars
 
     bars.enter()
       .append("rect")
       .merge(bars)
       .transition().duration(!first * 500)
+      .attr("class", "barplot")
       .attr("x", function(d) { return x(d.date); })
       .attr("y", function(d) { return y(d.value); })
       .attr("width", barWidth)
@@ -137,21 +140,33 @@ function drawBarplot(data){
             return y(d.value);
           });
 
-    var avgLine, currYearRect;
-    var axisY = d3v4.axisLeft(y).ticks(4);
-    var axisX = d3v4.axisBottom(x);
+    var axisY = d3v4.axisRight(y).ticks(4, "s");
+    var axisX = d3v4.axisBottom(x).ticks(20);;
 
     if (first){
       avgLine = svg.append("path")
         .attr("id", "avgLine");
-      <!--currYearRect = svg.append("rect")-->
-      <!--  .attr("id", "currYearRect")-->
-      <!--  .attr("fill-opacity", 0.25)-->
-      <!--  .attr("fill", "#ff6732")-->
-      <!--  .style("mix-blend-mode", 'screen');-->
+      currYearRect = svg.append("rect")
+        .attr("id", "currYearRect")
+        .attr("fill-opacity", 0.2)
+        .attr("fill", "#6b7a8a")
+        .style("mix-blend-mode", 'screen');
+      currYearLineL = svg.append("line")
+        .attr("id", "currYearLineL")
+        .attr("stroke-opacity", 0.4)
+        .attr("stroke-width", 2)
+        .attr("stroke", "#6b7a8a")
+        .style("mix-blend-mode", 'screen');
+      currYearLineR = svg.append("line")
+        .attr("id", "currYearLineR")
+        .attr("stroke-opacity", 0.4)
+        .attr("stroke-width", 2)
+        .attr("stroke", "#6b7a8a")
+        .style("mix-blend-mode", 'screen');
       //y axis
       svg.append("g")
         .attr("class", "y axis axisCustom")
+        .attr("transform", "translate(" + (width+barWidth) + ",0)")
         .call(axisY);
       //x axis
       svg.append("g")
@@ -161,8 +176,8 @@ function drawBarplot(data){
 
       first = false;
     }else{
-      avgLine = svg.select("path#avgLine");
-      //currYearRect = svg.selectAll("rect#currYearRect");
+      //avgLine = svg.select("path#avgLine");
+      //currYearRect = svg.select("rect#currYearRect");
       svg.selectAll("g.y.axis").transition().duration(500).call(axisY);
       svg.selectAll("g.x.axis").transition().duration(500).call(axisX);
     }
@@ -179,36 +194,39 @@ function drawBarplot(data){
       .attr("stroke-linecap", 'round')
       .attr("stroke", "#ff6732");
 
-    <!--currYearRect-->
-    <!--  //.transition()-->
-     <!--.attr("x", x(d3v4.timeParse("%Y")(current_year)))-->
-     <!--.attr("y", y(maxValue))-->
-     <!--.attr("width", x(d3v4.timeParse("%Y")(current_year+1))-x(d3v4.timeParse("%Y")(current_year)))-->
-     <!--.attr("height", height/2);-->
+    var yearX = x(d3v4.timeParse("%Y")(current_year));
+    var yearWidth = x(d3v4.timeParse("%Y")(current_year+1))-x(d3v4.timeParse("%Y")(current_year));
+    var yearY = y(maxValue);
 
-    console.log(current_year)
-    currYearRect = svg.datum(currYearRect)
-        .append("rect")
-        .attr("id", "currYearRect")
-        .attr("fill-opacity", 0.25)
-        .attr("fill", "#ff6732")
-        .style("mix-blend-mode", 'screen')
-        .attr("x", x(d3v4.timeParse("%Y")(current_year)))
-        .attr("y", y(maxValue))
-        .attr("width", x(d3v4.timeParse("%Y")(current_year+1))-x(d3v4.timeParse("%Y")(current_year)))
-        .attr("height", height);
-    
-    currYearRect.exit().remove();
+    currYearRect
+      .transition()
+      .attr("x", yearX)
+      .attr("y", yearY)
+      .attr("width", yearWidth)
+      .attr("height", height);
+
+    currYearLineL
+      .transition()
+      .attr('x1', yearX)
+      .attr('y1', yearY)
+      .attr('x2', yearX)
+      .attr('y2', yearY+height);
+
+    currYearLineR
+      .transition()
+      .attr('x1', yearX+yearWidth)
+      .attr('y1', yearY)
+      .attr('x2', yearX+yearWidth)
+      .attr('y2', yearY+height);
 
     //svg.on("click", function() {
     d3v4.select("#my_dataviz").on("click", function(d) {
       var mouse = d3v4.mouse(this);
       var xClicked = mouse[0];
-      //var yClicked = mouse[1];
-      var dateClicked = x.invert(xClicked);
-      console.log(dateClicked)
-      current_year = dateClicked.getFullYear();
-      updateInfo();
+      //	var yClicked = mouse[1];
+      var dateClicked = x.invert(xClicked-margin.left);
+      current_year = Math.min(Math.max(dateClicked.getFullYear(), 2001), 2018);
+      updateInfo(false);
       //d3v4.event.stopPropagation();
     });
 }

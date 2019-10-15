@@ -1,6 +1,6 @@
-airpt,value,airpt_lat,airpt_lon
-LEMD,632476,40.471926,-3.56264
-LEBL,138053,41.2971,2.0784599999999998
-LFPG,29063,49.012798,2.55
-GCTS,23113,28.044500351,-16.5725002289
-LFPO,22617,48.7233333,2.3794444
+airpt,value,airpt_iata,airpt_lat,airpt_lon,airpt_name
+LEMD,632476,MAD,40.471926,-3.56264,Adolfo Suárez Madrid–Barajas Airport
+LEBL,138053,BCN,41.2971,2.0784599999999998,Barcelona International Airport
+LFPG,29063,CDG,49.012798,2.55,Charles de Gaulle International Airport
+GCTS,23113,TFS,28.044500351,-16.5725002289,Tenerife South Airport
+LFPO,22617,ORY,48.7233333,2.3794444,Paris-Orly Airport

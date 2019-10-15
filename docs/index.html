@@ -32,8 +32,9 @@
   <script>
     var current_airport = "LEBL"
     var current_year = 2018
-    function updateInfo(){
-      updateMapInfo(this_datamap, true, current_airport, current_year);
+
+    function updateInfo(animate){
+      updateMapInfo(this_datamap, animate, current_airport, current_year);
       updateBarsInfo(current_airport);
     }
 
@@ -46,7 +47,7 @@
         .attr('class','collection-item blue-grey-text text-darken-2')
         .attr('href','#!')
         //.html(function(d){return "<b>"+d.name+"</b><br>"+d.iata+' - '+d.airpt;})
-        .html(function(d){return "<b>"+d.name+"</b><br>"+d.iata;})
+        .html(function(d){return "<b>"+d.name+"</b><br>"+d.iata+" / "+d.airpt;})
         .each(function(d){
           var $this = d3v4.select(this);
           if(d.airpt==current_airport)
@@ -57,7 +58,7 @@
           ul.selectAll('a').attr('class','collection-item blue-grey-text text-darken-2');
           $this.attr('class','collection-item active yellow darken-4');
           current_airport = d.airpt;
-          updateInfo();
+          updateInfo(true);
         });
     });
   </script>

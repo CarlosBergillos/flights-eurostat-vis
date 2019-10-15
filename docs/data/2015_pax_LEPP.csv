@@ -1,2 +1,2 @@
-airpt,value,airpt_lat,airpt_lon
-LEMD,129827,40.471926,-3.56264
+airpt,value,airpt_iata,airpt_lat,airpt_lon,airpt_name
+LEMD,129827,MAD,40.471926,-3.56264,Adolfo Suárez Madrid–Barajas Airport

@@ -28,27 +28,47 @@ function toArcs(input, from_airport) {
     input.map(function(row) {
         if(Object.entries(row).length > 1){
             if(row["value"] > 0){
-                var from = {"latitude":from_airport.lat, "longitude":from_airport.lon}
-                var to = {"latitude":row.airpt_lat, "longitude":row.airpt_lon}
-                pax_factor = 1.5 + Math.pow(row.value, 5/6)/25000
+                var from = {"latitude":from_airport.lat, "longitude":from_airport.lon};
+                var to = {"latitude":row.airpt_lat, "longitude":row.airpt_lon};
+                pax_factor = 1.5 + Math.pow(row.value, 5/6)/25000;
                 //var options = {}
                 //var data = {"origin": from, "destination": to, "options": options, "name": row.airpt}
-                var data = {"origin": from, "destination": to, "name": row.airpt, "nameFrom": from_airport.airpt, strokeColor: 'rgba(250,100,50, '+Math.min(0.15+pax_factor/16, 1)+')', strokeWidth: pax_factor}
-                arcs.push(data)
+                var data = {"origin": from,
+                            "destination": to,
+                            "iataFrom": from_airport.iata,
+                            "icaoTo": row.airpt,
+                            "iataTo": row.airpt_iata,
+                            "nameTo": row.airpt_name,
+                            "value": row.value,
+                            "strokeColor": 'rgba(250,100,50, '+Math.min(0.15+pax_factor/16, 1)+')',
+                            "strokeWidth": pax_factor};
+                arcs.push(data);
             }
         }
     });
     return arcs;
 }
 
-function toBubbles(input) {
+function toBubbles(input, from_airport) {
     var bubbles = []
     input.map(function(row) {
         if(Object.entries(row).length > 1){
             if(row.value > 0){
                 //pax_factor = Math.sqrt(row["pax2018"])/500
-                pax_factor = 1 + Math.pow(row.value,3/4)/15000
-                data = {radius: circleRadius*pax_factor/prev_scale, "name": row.airpt, "latitude":row.airpt_lat, "longitude":row.airpt_lon, borderWidth: 1, borderOpacity: 0.5, fillColor: '#ff7043', fillOpacity: 1, highlightFillColor: 'rgba(255, 255, 255, 0.8'}
+                pax_factor = 1 + Math.pow(row.value,3/4)/15000;
+                data = {"radius": circleRadius*pax_factor/prev_scale,
+                        "iataFrom": from_airport.iata,
+                        "icaoTo": row.airpt,
+                        "iataTo": row.airpt_iata,
+                        "nameTo": row.airpt_name,
+                        "value": row.value,
+                        "latitude":row.airpt_lat,
+                        "longitude":row.airpt_lon,
+                        "borderWidth": 1,
+                        "borderOpacity": 0.5,
+                        "fillColor": '#ff7043', 
+                        "fillOpacity": 1,
+                        "highlightFillColor": 'rgba(255, 255, 255, 0.8'};
                 bubbles.push(data)
             }
         }
@@ -277,8 +297,8 @@ function toBubbles(input) {
             jsonArray = parseCSV(text)
             arcs = toArcs(jsonArray, from_airport);
             datamap.arc(arcs, {greatArc: true, animationSpeed: 600*animate});
-            bubbles = toBubbles(jsonArray)
-            origin = {radius: 5/prev_scale, "name": from_airport.airpt, "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
+            bubbles = toBubbles(jsonArray, from_airport)
+            origin = {radius: 5/prev_scale, "icaoTo": "", "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
             bubbles.push(origin)
             datamap.bubbles(bubbles)
     });
@@ -290,14 +310,14 @@ function toBubbles(input) {
     	datamap: datamap
     });
     this_datamap = datamap;
-    d3v3.json("data/local_airports.json", function(error, data) {
-        local_airports = data;
-        updateMapInfo(datamap, true, current_airport, current_year);
-        d3v3.select("#change-aip").on("click", function(){
-            //current_airport = (++current_airport)%airports.length;
-            //current_year = (++current_year)%years.length;
-            //updateMapInfo(datamap, true, current_airport, current_year);
-        });
+    d3v3.json("data/local_airports.json", function(error, dataLocal) {
+      local_airports = dataLocal;
+      updateMapInfo(datamap, true, current_airport, current_year);
+      d3v3.select("#change-aip").on("click", function(){
+          //current_airport = (++current_airport)%airports.length;
+          //current_year = (++current_year)%years.length;
+          //updateMapInfo(datamap, true, current_airport, current_year);
+      });
     });
   }
 
