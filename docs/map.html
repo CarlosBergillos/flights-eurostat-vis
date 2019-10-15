@@ -1,5 +1,5 @@
 <div id="map"></div>
-
+<a class="btn-floating btn-large waves-effect waves-light red zoom-button" data-zoom="in">+</a>
 <script>
 var circleRadius = 2
 
@@ -286,6 +286,17 @@ function toBubbles(input, from_airport) {
         fills: {
             defaultFill: '#131522'
         },
+        <!--projectionConfig: {-->
+        <!--  center: [80, 95]-->
+        <!--},-->
+        <!--setProjection: function(element) {-->
+        <!-- var projection = d3v3.geo.mercator()-->
+        <!--    .center([0, 45])-->
+        <!--    .scale(element.offsetWidth)-->
+        <!--    .translate([element.offsetWidth / 2, element.offsetHeight / 2]);-->
+        <!-- var path = d3v3.geo.path().projection(projection);-->
+        <!-- return {path: path, projection: projection};-->
+        <!--},-->
     });
   }
 
