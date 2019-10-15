@@ -30,9 +30,12 @@
     <li class="collection-header"><h4>Airports</h4></li>
   </ul>
   <script>
-
     var current_airport = "LEBL"
-    var current_year = "2018"
+    var current_year = 2018
+    function updateInfo(){
+      updateMapInfo(this_datamap, true, current_airport, current_year);
+      updateBarsInfo(current_airport);
+    }
 
     var ul = d3v4.select("#slide-out")
     d3v4.json('data/local_airports.json', function(json) {
@@ -53,15 +56,10 @@
           var $this = d3v4.select(this);
           ul.selectAll('a').attr('class','collection-item blue-grey-text text-darken-2');
           $this.attr('class','collection-item active yellow darken-4');
-          current_airport = d.name;
-          updateMapInfo(this_datamap, true, d.airpt, "2018");
-          updateBarsInfo(d.airpt);
+          current_airport = d.airpt;
+          updateInfo();
         });
     });
-    <!--ul.select('a')-->
-    <!--  .enter()-->
-    <!--  .attr('class','collection-item active')-->
-    <!--  .html(function(d){ console.log("Huh"); return "HHH";});-->
   </script>
   <div class="main">
     <div class="wrapper" id="mapContent">
