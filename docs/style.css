@@ -19,11 +19,11 @@ html, body {
   min-height: 100%;
   height: auto !important;
   height: 100%;
-  margin: 0 auto -240px; /* the bottom margin is the negative value of the footer's height */
+  margin: 0 auto -220px; /* the bottom margin is the negative value of the footer's height */
   position: relative;
 }
 .lower, .push{
-  height: 240px; /* .push must be the same height as .footer */
+  height: 220px; /* .push must be the same height as .footer */
   position: relative;
 }
 .lower{

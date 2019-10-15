@@ -83,7 +83,7 @@ function NMoveAvg(context, N) {
 var divWidth = $("#lowerContent").width();
 var divHeight = $("#lowerContent").height();
 
-var margin = {top: 20, right: 60, bottom: 30, left: 30},
+var margin = {top: 10, right: 60, bottom: 30, left: 30},
     width = divWidth - margin.left - margin.right,
     height = divHeight - margin.top - margin.bottom;
 
@@ -100,7 +100,7 @@ var first = true;
 var avgLine, currYearRect, currYearLineL, currYearLineR;
 
 function drawBarplot(data){
-    maxValue = d3v4.max(data, function(d) { return d.value; }) * 1.1;
+    maxValue = d3v4.max(data, function(d) { return d.value; }) * 1.05;
 
     // X axis
     var x = d3v4.scaleTime()
