@@ -580,9 +580,7 @@
               .attr('data-previousAttributes', JSON.stringify(previousAttributes));
           }
 
-          if (options.popupOnHover) {
-            self.updatePopup($this, datum, options, svg);
-          }
+          self.updatePopup($this, datum, options, svg);
 
           var data = JSON.parse($this.attr('data-info')); 
           d3.selectAll('path.datamaps-arc').each(function(d){

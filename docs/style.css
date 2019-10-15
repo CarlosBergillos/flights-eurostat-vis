@@ -63,10 +63,12 @@ html, body {
   opacity: 0.75;
 } 
 
-.zoom-button{
+.btn-floating{
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
+  float: right;
+  margin: 10px 10px 10px 0px;
   /*margin-left: 20px;*/
   /*margin-bottom: 0px;*/
 }

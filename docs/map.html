@@ -1,5 +1,6 @@
 <div id="map"></div>
-<a class="btn-floating btn-large waves-effect waves-light red zoom-button" data-zoom="in">+</a>
+<a class="btn-floating btn-small waves-effect waves-light deep-orange lighten-1"><i class="material-icons zoom-button" data-zoom="in">add</i></a>
+<a class="btn-floating btn-small waves-effect waves-light deep-orange lighten-1"><i class="material-icons zoom-button" data-zoom="out">remove</i></a>
 <script>
 var circleRadius = 2
 
@@ -133,7 +134,6 @@ function toBubbles(input, from_airport) {
 
   Zoom.prototype._handleClick = function(event) {
     var direction = $(event.target).data("zoom");
-
     this._shift(direction);
   };
 
@@ -309,7 +309,7 @@ function toBubbles(input, from_airport) {
             arcs = toArcs(jsonArray, from_airport);
             datamap.arc(arcs, {greatArc: true, animationSpeed: 600*animate});
             bubbles = toBubbles(jsonArray, from_airport)
-            origin = {radius: 5/prev_scale, "icaoTo": "", "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
+            origin = {"radius": 5/prev_scale, "popupOnHover": false, "icaoTo": "", "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
             bubbles.push(origin)
             datamap.bubbles(bubbles)
     });
