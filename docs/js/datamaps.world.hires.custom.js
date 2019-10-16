@@ -67,15 +67,7 @@
       animationSpeed: 600,
       popupOnHover: false,
       popupTemplate: function(geography, data) {
-        return `<div class="card blue-grey lighten-5" style="min-width:270px; max-width:270px; opacity: 0.9;">
-                  <div class="card-content truncate" style="padding: 8px;">
-                    <b >` + data.nameTo + `</b>
-                    <blockquote class="white" style="margin: 10px 0 0 0; padding:0 0 0.5rem 0.5rem; border-color: #ff7043;">
-                    <p style="padding-top: 8px; font-family: monospace;">` + data.iataFrom + `&thinsp;&hArr;&thinsp;` + data.iataTo + `</p>
-                    <p><b>` + d3.format(".2s")(data.value) + `</b> pax in ` + current_year + `</p>
-                    </blockquote>
-                  </div>
-                </div>`;
+        return "<b>empty</b>";
       }
     }
   };

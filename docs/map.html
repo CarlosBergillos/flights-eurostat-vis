@@ -301,6 +301,18 @@ function toBubbles(input, from_airport) {
     });
   }
 
+  function customPopupTemplate(geography, data) {
+    return `<div class="card blue-grey lighten-5" style="min-width:270px; max-width:270px; opacity: 0.9;">
+              <div class="card-content truncate" style="padding: 8px;">
+                <b >` + data.nameTo + `</b>
+                <blockquote class="white" style="margin: 10px 0 0 0; padding:0 0 0.5rem 0.5rem; border-color: ` + units[current_unit].color + `;">
+                <p style="padding-top: 8px; font-family: monospace;">` + data.iataFrom + `&thinsp;&hArr;&thinsp;` + data.iataTo + `</p>
+                <p><b>` + d3v4.format(".2s")(data.value) + `</b> pax in ` + current_year + `</p>
+                </blockquote>
+              </div>
+            </div>`;
+  }
+
   function updateMapInfo(datamap, animate, airport, year){
     fetch(getUrl(airport, year))
         .then(response => response.text())
@@ -308,11 +320,11 @@ function toBubbles(input, from_airport) {
             from_airport = defiant.search(local_airports, '//*[airpt="'+airport+'"]')[0]
             jsonArray = parseCSV(text)
             arcs = toArcs(jsonArray, from_airport);
-            datamap.arc(arcs, {greatArc: true, animationSpeed: 600*animate});
+            datamap.arc(arcs, {greatArc: true, animationSpeed: 600*animate, popupTemplate: customPopupTemplate});
             bubbles = toBubbles(jsonArray, from_airport)
             origin = {"radius": 5/prev_scale, "popupOnHover": false, "icaoTo": "", "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
             bubbles.push(origin)
-            datamap.bubbles(bubbles, {animate: animate})
+            datamap.bubbles(bubbles, {animate: animate, popupTemplate: customPopupTemplate})
     });
   }
 
