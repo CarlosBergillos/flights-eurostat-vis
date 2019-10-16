@@ -233,7 +233,7 @@ function drawBarplot(data){
 }
 
 function parseBarplotInfo(d){
-  return { date : d3v4.timeParse("%YM%m")(d.timeperiod), value : +d.pax }
+  return { date : d3v4.timeParse("%YM%m")(d.timeperiod), value : +d[current_unit] }
 }
 
 function updateBarsInfo(airport){

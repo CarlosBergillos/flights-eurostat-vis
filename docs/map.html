@@ -10,7 +10,7 @@ var arcs = []
 var bubbles = []
 
 function getUrl(airport, year){
-    return 'data/'+ year +'_pax_'+ airport +'.csv'
+    return 'data/routes/'+ year + '_' + airport +'.csv'
 }
 
 function parseCSV(input) {
@@ -28,10 +28,10 @@ function toArcs(input, from_airport) {
     var arcs = []
     input.map(function(row) {
         if(Object.entries(row).length > 1){
-            if(row["value"] > 0){
+            if(row[current_unit] > 0){
                 var from = {"latitude":from_airport.lat, "longitude":from_airport.lon};
                 var to = {"latitude":row.airpt_lat, "longitude":row.airpt_lon};
-                pax_factor = 1.5 + Math.pow(row.value, 5/6)/25000;
+                pax_factor = 1.5 + Math.pow(row.pax, 5/6)/25000;
                 //var options = {}
                 //var data = {"origin": from, "destination": to, "options": options, "name": row.airpt}
                 var data = {"origin": from,
@@ -40,7 +40,7 @@ function toArcs(input, from_airport) {
                             "icaoTo": row.airpt,
                             "iataTo": row.airpt_iata,
                             "nameTo": row.airpt_name,
-                            "value": row.value,
+                            "value": row[current_unit],
                             "strokeColor": units[current_unit].color2,
                             "strokeOpacity": Math.min(0.15+pax_factor/16, 1),
                             "strokeWidth": pax_factor};
@@ -55,15 +55,15 @@ function toBubbles(input, from_airport) {
     var bubbles = []
     input.map(function(row) {
         if(Object.entries(row).length > 1){
-            if(row.value > 0){
+            if(row[current_unit] > 0){
                 //pax_factor = Math.sqrt(row["pax2018"])/500
-                pax_factor = 1 + Math.pow(row.value,3/4)/15000;
+                pax_factor = 1 + Math.pow(row.pax,3/4)/15000;
                 data = {"radius": circleRadius*pax_factor/prev_scale,
                         "iataFrom": from_airport.iata,
                         "icaoTo": row.airpt,
                         "iataTo": row.airpt_iata,
                         "nameTo": row.airpt_name,
-                        "value": row.value,
+                        "value": row[current_unit],
                         "latitude":row.airpt_lat,
                         "longitude":row.airpt_lon,
                         "borderWidth": 1,
@@ -307,7 +307,7 @@ function toBubbles(input, from_airport) {
                 <b >` + data.nameTo + `</b>
                 <blockquote class="white" style="margin: 10px 0 0 0; padding:0 0 0.5rem 0.5rem; border-color: ` + units[current_unit].color + `;">
                 <p style="padding-top: 8px; font-family: monospace;">` + data.iataFrom + `&thinsp;&hArr;&thinsp;` + data.iataTo + `</p>
-                <p><b>` + d3v4.format(".2s")(data.value) + `</b> pax in ` + current_year + `</p>
+                <p><b>` + d3v5.format(".3~s")(data.value) + `</b> ` + units[current_unit].shortName + ` in ` + current_year + `</p>
                 </blockquote>
               </div>
             </div>`;

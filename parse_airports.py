@@ -2,10 +2,6 @@ import pandas as pd
 import subprocess
 import csv
 
-unit = "PAS_CRD"
-
-units_map = {"PAS_CRD":"pax"}
-
 file_in = './avia_par_es/avia_par_es_fixed.csv'
 file_airports = './other_data/airports.csv'
 
@@ -53,24 +49,24 @@ def generate_all_airports():
     with open(file_all_airports_out, 'w', encoding='utf-8') as file:
         all_airports.to_json(file, orient='records', force_ascii=False)
 
-def parse_airport_data(airport, year, unit):
-    unit_s = units_map[unit]
-    file_out = f'./custom_data/{year}_{unit_s}_{airport}.csv'
+def parse_airport_data(airport, year):
+    file_out = f'./custom_data/{year}_{airport}.csv'
 
-    data_from_airport = df[(df['airpt_dep']==airport) & (df['tra_meas']==unit)]
-    destinations_data = data_from_airport[['airpt_arr', year]]
-    destinations_data = destinations_data.rename(columns={'airpt_arr': 'airpt', year: 'value'})
-    destinations_data = destinations_data.sort_values(by=['value'], ascending=False)
+    ap_data = df[df['airpt_dep']==airport]
 
-    # print(LEBL_destinations_pax_2018)
-    # LEBL_destinations_pax_2018.to_csv(file_out, index=None, header=False, sep=',')
+    ap_data_pax = ap_data[ap_data['tra_meas']=="PAS_CRD"]
+    ap_data_pax = ap_data_pax[['airpt_arr', year]]
+    ap_data_pax = ap_data_pax.rename(columns={'airpt_arr': 'airpt', year: 'pax'})
 
-    # dep_airport = airports_data[airports_data['ident']==airport].iloc[0]
-    # dep_lat = dep_airport['latitude_deg']
-    # dep_lon = dep_airport['longitude_deg']
+    ap_data_flights = ap_data[ap_data['tra_meas']=="CAF_PAS"]
+    ap_data_flights = ap_data_flights[['airpt_arr', year]]
+    ap_data_flights = ap_data_flights.rename(columns={'airpt_arr': 'airpt', year: 'flights'})
+
+    destinations_data = pd.merge(ap_data_pax, ap_data_flights, how='inner', on='airpt')
+    destinations_data = destinations_data.sort_values(by=['pax'], ascending=False)
 
     for i, row in destinations_data.iterrows():
-        if row['value'] == 0:
+        if (row['pax'] == 0) | (row['flights'] == 0):
             destinations_data.drop(i, inplace=True)
             continue
 
@@ -96,5 +92,6 @@ if __name__ == '__main__':
 
     for year in range(2001, 2019):
         for airport in departure_airports:
+        # for airport in ["LEBL"]:
             print(f"{year} - {airport}")
-            parse_airport_data(airport, str(year), unit)
+            parse_airport_data(airport, str(year))
