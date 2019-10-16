@@ -65,7 +65,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
       var elems = document.querySelectorAll('.dropdown-trigger');
-      var instances = M.Dropdown.init(elems, {"constrainWidth":false, "coverTrigger":false, "hover":true});
+      var instances = M.Dropdown.init(elems, {"constrainWidth":true, "coverTrigger":false, "hover":true});
       var instance = M.Dropdown.getInstance(elems[0]);
       //instance.open();
     });
@@ -75,15 +75,15 @@
     <div class="wrapper" id="mapContent">
       <div class="push"></div>
     </div>
-    <!-- Dropdown Trigger -->
-    <a class="dropdown-trigger btn-small deep-orange lighten-1" style="position: absolute; z-index: 1; bottom:220px; margin:10px" href="#" data-target="dropdown1"><i class="material-icons left">people</i>Number of Passengers</a>
-    <!-- Dropdown Structure -->
+    <!--<a class="dropdown-trigger btn-small deep-orange lighten-1" style="position: absolute; z-index: 1; bottom:220px; margin:10px; width:260px;" href="#" data-target="dropdown1"><i class="material-icons left">flight_takeoff</i>Number of Flights</a>-->
+    <a class="dropdown-trigger btn-small deep-orange lighten-1" style="position: absolute; z-index: 1; bottom:220px; margin:10px; width:260px;" href="#" data-target="dropdown1"><i class="material-icons left">people</i>Number of Passengers</a>
+    <!--<a class="dropdown-trigger btn-small deep-orange lighten-1" style="position: absolute; z-index: 1; bottom:220px; margin:10px; width:260px;" href="#" data-target="dropdown1"><i class="material-icons left">public</i>CO2 emissions (kg)</a>-->
     <ul id="dropdown1" class="dropdown-content" style="position: absolute; z-index: 1; top:0px; margin:10px;">
-      <li><a href="#!"><i class="material-icons">flight_takeoff</i>Number of Flights</a></li>
+      <li><a class="blue-grey-text text-darken-2" href="#!"><i class="material-icons">flight_takeoff</i>Number of Flights</a></li>
       <li class="divider" tabindex="-1"></li>
-      <li><a href="#!"><i class="material-icons">people</i>Number of Passengers</a></li>
+      <li><a class="blue-grey-text text-darken-2" href="#!"><i class="material-icons">people</i>Number of Passengers</a></li>
       <li class="divider" tabindex="-1"></li>
-      <li><a href="#!"><i class="material-icons">public</i>CO2 emissions (kg)</a></li>
+      <li><a class="blue-grey-text text-darken-2" href="#!"><i class="material-icons">public</i>CO2 emissions (kg)</a></li>
     </ul>
     <div class="lower" id="lowerContent"></div>
   </div>
