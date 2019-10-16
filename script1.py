@@ -43,32 +43,33 @@ flights_from_LEBL_to_US = df[(df['airpt_dep']=="LEBL") & (df['country_arr']=="US
 pax_from_LEBL = df[(df['airpt_dep']=="LEBL") & (df['tra_meas']=="PAS_CRD")]
 pax_from_LEBL_to_US = df[(df['airpt_dep']=="LEBL") & (df['country_arr']=="US") & (df['tra_meas']=="PAS_CRD")]
 
-sum_pax_from_LEBL = pax_from_LEBL[cols_years].sum()
-# print(sum_pax_from_LEBL)
-plot2 = sum_pax_from_LEBL.plot(kind = 'bar')
-plot2.get_figure().savefig('pax_from_LEBL.pdf', format='pdf')
+# print(pax_from_LEBL["2018"].sum())
+# sum_pax_from_LEBL = pax_from_LEBL[cols_years].sum()
+# # print(sum_pax_from_LEBL)
+# plot2 = sum_pax_from_LEBL.plot(kind = 'bar')
+# plot2.get_figure().savefig('pax_from_LEBL.pdf', format='pdf')
 
-plt.clf()
+# plt.clf()
 
-sum_pax_from_LEBL_2018 = pax_from_LEBL[cols_2018].sum()
-# print(sum_pax_from_LEBL_2018)
-plot3 = sum_pax_from_LEBL_2018.plot(kind = 'bar')
-plot3.get_figure().savefig('pax_from_LEBL_2018.pdf', format='pdf')
+# sum_pax_from_LEBL_2018 = pax_from_LEBL[cols_2018].sum()
+# # print(sum_pax_from_LEBL_2018)
+# plot3 = sum_pax_from_LEBL_2018.plot(kind = 'bar')
+# plot3.get_figure().savefig('pax_from_LEBL_2018.pdf', format='pdf')
 
-plt.clf()
+# plt.clf()
 
-sum_pax_from_LEBL_all = pax_from_LEBL[cols_months].sum()
-# print(sum_pax_from_LEBL_2018)
-plot4 = sum_pax_from_LEBL_all.plot(kind = 'area')
-plot4.get_figure().savefig('sum_pax_from_LEBL_all.pdf', format='pdf')
+# sum_pax_from_LEBL_all = pax_from_LEBL[cols_months].sum()
+# # print(sum_pax_from_LEBL_2018)
+# plot4 = sum_pax_from_LEBL_all.plot(kind = 'area')
+# plot4.get_figure().savefig('sum_pax_from_LEBL_all.pdf', format='pdf')
 
 
 LEBL_destinations_pax_2018 = pax_from_LEBL[['airpt_arr', '2018']]
 LEBL_destinations_pax_2018 = LEBL_destinations_pax_2018.sort_values(by=['2018'], ascending=False)
-# print(LEBL_destinations_pax_2018.head(10))
+print(LEBL_destinations_pax_2018.head(10))
 
-LEBL_destinations_flights_2018 = flights_from_LEBL[['airpt_arr', '2018']]
-LEBL_destinations_flights_2018 = LEBL_destinations_flights_2018.sort_values(by=['2018'], ascending=False)
+# LEBL_destinations_flights_2018 = flights_from_LEBL[['airpt_arr', '2018']]
+# LEBL_destinations_flights_2018 = LEBL_destinations_flights_2018.sort_values(by=['2018'], ascending=False)
 # print(LEBL_destinations_flights_2018.head(10))
 
 

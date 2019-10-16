@@ -13,3 +13,10 @@ PAS_BRD_ARR: Passengers on board (arrivals)
 PAS_CRD: Passengers carried
 ST_PAS: Passengers seats available
 
+Blacklist airports (beacuse they have missing info on some time-periods): 
+- Pamplona
+- Hierro
+- Vitoria
+
+
+
