@@ -41,7 +41,8 @@ function toArcs(input, from_airport) {
                             "iataTo": row.airpt_iata,
                             "nameTo": row.airpt_name,
                             "value": row.value,
-                            "strokeColor": 'rgba(250,100,50, '+Math.min(0.15+pax_factor/16, 1)+')',
+                            "strokeColor": units[current_unit].color2,
+                            "strokeOpacity": Math.min(0.15+pax_factor/16, 1),
                             "strokeWidth": pax_factor};
                 arcs.push(data);
             }
@@ -67,7 +68,7 @@ function toBubbles(input, from_airport) {
                         "longitude":row.airpt_lon,
                         "borderWidth": 1,
                         "borderOpacity": 0.5,
-                        "fillColor": '#ff7043', 
+                        "fillColor": units[current_unit].color, 
                         "fillOpacity": 1,
                         "highlightFillColor": 'rgba(255, 255, 255, 0.8'};
                 bubbles.push(data)
@@ -311,7 +312,7 @@ function toBubbles(input, from_airport) {
             bubbles = toBubbles(jsonArray, from_airport)
             origin = {"radius": 5/prev_scale, "popupOnHover": false, "icaoTo": "", "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
             bubbles.push(origin)
-            datamap.bubbles(bubbles)
+            datamap.bubbles(bubbles, {animate: animate})
     });
   }
 

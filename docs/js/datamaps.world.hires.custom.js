@@ -62,11 +62,12 @@
     arcConfig: {
       strokeColor: '#DD1C77',
       strokeWidth: 1,
+      strokeOpacity: 1,
       arcSharpness: 1,
       animationSpeed: 600,
       popupOnHover: false,
       popupTemplate: function(geography, data) {
-        return `<div class="card blue-grey lighten-5" style="min-width:270px; max-width:270px">
+        return `<div class="card blue-grey lighten-5" style="min-width:270px; max-width:270px; opacity: 0.9;">
                   <div class="card-content truncate" style="padding: 8px;">
                     <b >` + data.nameTo + `</b>
                     <blockquote class="white" style="margin: 10px 0 0 0; padding:0 0 0.5rem 0.5rem; border-color: #ff7043;">
@@ -366,6 +367,9 @@
         .style('stroke', function(datum) {
           return val(datum.strokeColor, options.strokeColor, datum);
         })
+        .style('stroke-opacity', function(datum) {
+          return val(datum.strokeOpacity, options.strokeOpacity, datum);
+        })
         .style('fill', 'none')
         .style('mix-blend-mode', 'screen')
         .style('stroke-width', function(datum) {
@@ -396,9 +400,11 @@
         .on('mouseover', function ( datum ) {
           var $this = d3.select(this);
           var previousAttributes = {'stroke':  $this.style('stroke'),
+                                    'stroke-opacity':  $this.style('stroke-opacity'),
                                     'mix-blend-mode': $this.style('mix-blend-mode')};
           $this
-          .style('stroke', 'rgba(255, 255, 255, 0.75)')
+          .style('stroke', '#fff')
+          .style('stroke-opacity', 0.75)
           .style('mix-blend-mode', 'normal')
           .attr('data-previousAttributes', JSON.stringify(previousAttributes));
 

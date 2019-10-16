@@ -192,7 +192,8 @@ function drawBarplot(data){
       .attr("stroke-width", 4)
       .attr("stroke-opacity", 0.75)
       .attr("stroke-linecap", 'round')
-      .attr("stroke", "#ff6732");
+      .attr("stroke", units[current_unit].color);
+      //.attr("stroke", "#ff6732");
 
     var yearX = x(d3v4.timeParse("%Y")(current_year));
     var yearWidth = x(d3v4.timeParse("%Y")(current_year+1))-x(d3v4.timeParse("%Y")(current_year));
