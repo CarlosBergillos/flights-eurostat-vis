@@ -6,6 +6,7 @@ html, body {
   width: 100%;  
   margin: 0;
   background-color: #182633;
+  overflow: hidden;
 }
 
 .main {
