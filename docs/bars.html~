@@ -148,7 +148,7 @@ function drawBarplot(data){
         .attr("id", "avgLine");
       currYearRect = svg.append("rect")
         .attr("id", "currYearRect")
-        .attr("fill-opacity", 0.35)
+        .attr("fill-opacity", 0.2)
         .attr("fill", "#6b7a8a")
         .style("mix-blend-mode", 'screen');
       currYearLineL = svg.append("line")

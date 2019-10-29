@@ -70,7 +70,7 @@ function toBubbles(input, from_airport) {
                         "borderOpacity": 0.5,
                         "fillColor": units[current_unit].color, 
                         "fillOpacity": 1,
-                        "highlightFillColor": 'rgba(255, 255, 255, 1'};
+                        "highlightFillColor": 'rgba(255, 255, 255, 0.8'};
                 bubbles.push(data)
             }
         }
@@ -322,7 +322,7 @@ function toBubbles(input, from_airport) {
             arcs = toArcs(jsonArray, from_airport);
             datamap.arc(arcs, {greatArc: true, animationSpeed: 600*animate, popupTemplate: customPopupTemplate});
             bubbles = toBubbles(jsonArray, from_airport)
-            origin = {"radius": 5/prev_scale, popupOnHover: false, "icaoTo": "", "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
+            origin = {"radius": 5/prev_scale, "popupOnHover": false, "icaoTo": "", "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
             bubbles.push(origin)
             datamap.bubbles(bubbles, {animate: animate, popupTemplate: customPopupTemplate})
     });

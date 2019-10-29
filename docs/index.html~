@@ -50,9 +50,8 @@
     var current_unit = "pax";
 
     var units = {"pax": {shortName:"pax", name: "Number of Passengers", icon: "people", color: "#ff7043", color2: "#ff6732"},
-                 "flights": {shortName:"flights", name: "Number of Flights", icon: "flight_takeoff", color: "#673ab7", color2: "#673ab7"}
-                 //"co2": {shortName:"CO2", name: "CO2 emissions (kg)", icon: "public", color: "#00897b", color2: "#006732"}
-                };
+                 "flights": {shortName:"flights", name: "Number of Flights", icon: "flight_takeoff", color: "#673ab7", color2: "#673ab7"},
+                 "co2": {shortName:"CO2", name: "CO2 emissions (kg)", icon: "public", color: "#00897b", color2: "#006732"}};
 
     function updateInfo(animate){
       updateMapInfo(this_datamap, animate, current_airport, current_year);

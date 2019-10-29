@@ -387,8 +387,6 @@
         .attr('data-info', function(datum) {
           return JSON.stringify(datum);
         })
-        .on('bubblemouseover', function ( datum ) {})
-        .on('bubblemouseout', function ( datum ) {})
         .on('mouseover', function ( datum ) {
           var $this = d3.select(this);
           var previousAttributes = {'stroke':  $this.style('stroke'),
@@ -401,6 +399,15 @@
           .attr('data-previousAttributes', JSON.stringify(previousAttributes));
 
           self.updatePopup($this, datum, options, svg);
+
+          if (!d3.event.detail.artificial){
+            var data = JSON.parse($this.attr('data-info')); 
+            d3.selectAll('circle.datamaps-bubble').each(function(d){
+              if (d.icaoTo == data.icaoTo){
+                  this.dispatchEvent(new CustomEvent('mouseover', {detail: {artificial:true}}));
+              }
+            });
+          }
         })
         .on('mouseout', function ( datum ) {
           var $this = d3.select(this);
@@ -411,6 +418,15 @@
           }
 
           d3.selectAll('.datamaps-hoverover').style('display', 'none');
+
+          if (!d3.event.detail.artificial){
+            var data = JSON.parse($this.attr('data-info'));
+            d3.selectAll('circle.datamaps-bubble').each(function(d){
+              if (d.icaoTo == data.icaoTo){
+                this.dispatchEvent(new CustomEvent('mouseout', {detail: {artificial:true}}));
+              }
+            });
+          }
         })
         .transition()
           .delay(100)
@@ -586,17 +602,18 @@
               .attr('data-previousAttributes', JSON.stringify(previousAttributes));
           }
 
-          if (options.popupOnHover) {
+          var data = JSON.parse($this.attr('data-info'));
+          if (options.popupOnHover && data.icaoTo) {
             self.updatePopup($this, datum, options, svg);
           }
-
-          var data = JSON.parse($this.attr('data-info')); 
-          d3.selectAll('path.datamaps-arc').each(function(d){
-            // if (d.name == data.name || d.nameFrom == data.name){
-            if (d.icaoTo == data.icaoTo){
-                this.dispatchEvent(new CustomEvent('mouseover'));
-            }
-          });
+          if (!d3.event.detail.artificial){
+            d3.selectAll('path.datamaps-arc').each(function(d){
+              // if (d.name == data.name || d.nameFrom == data.name){
+              if (d.icaoTo == data.icaoTo){
+                  this.dispatchEvent(new CustomEvent('mouseover', {detail: {artificial:true}}));
+              }
+            });
+          }
         })
         .on('mouseout', function ( datum ) {
           var $this = d3.select(this);
@@ -610,13 +627,14 @@
           }
 
           // d3.selectAll('.datamaps-hoverover').style('display', 'none');
-
-          var data = JSON.parse($this.attr('data-info'));
-          d3.selectAll('path.datamaps-arc').each(function(d){
-            if (d.name == data.name || d.nameFrom == data.name){
-                this.dispatchEvent(new CustomEvent('mouseout'));
-            }
-          });
+          if (!d3.event.detail.artificial){
+            var data = JSON.parse($this.attr('data-info'));
+            d3.selectAll('path.datamaps-arc').each(function(d){
+              if (d.name == data.name || d.nameFrom == data.name){
+                  this.dispatchEvent(new CustomEvent('mouseout', {detail: {artificial:true}}));
+              }
+            });
+          }
         })
 
     bubbles.transition()
