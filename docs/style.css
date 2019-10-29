@@ -5,7 +5,7 @@ html, body {
   height: 100%;
   width: 100%;  
   margin: 0;
-  background-color: #182633;
+  background-color: #283643;
   overflow: hidden;
 }
 
@@ -72,6 +72,19 @@ html, body {
   margin: 10px 10px 10px 0px;
   /*margin-left: 20px;*/
   /*margin-bottom: 0px;*/
+}
+
+div.tooltip-bars {
+  position: absolute;
+  /*text-align: center;*/
+  /*width: 60px;*/
+  /*height: 28px;*/
+  /*padding: 2px;*/
+  /*font: 12px sans-serif;*/
+  /*background: lightsteelblue;*/
+  /*border: 0px;*/
+  /*border-radius: 8px;*/
+  pointer-events: none;
 }
 
 @media screen and (orientation:portrait) { height: 100vh;

@@ -1125,7 +1125,7 @@
     element.on('mousemove', null);
     element.on('mousemove', function() {
       var position = d3.mouse(self.options.element);
-      obj.style('top', ( (position[1] + 30)) + "px")
+      obj.style('top', ( position[1] + 20) + "px")
         .style('left', ( position[0]) + "px");
     });
 

@@ -126,9 +126,46 @@ function drawBarplot(data){
       .attr("y", function(d) { return y(d.value); })
       .attr("width", barWidth)
       .attr("height", function(d) { return height - y(d.value); })
-      //.attr("stroke", "#404e5d")
-      //.attr("stroke-width", 0)
+      .attr("data-info", function(d) { return JSON.stringify({date: d3v4.timeFormat("%b-%Y")(d.date), value: d.value});})
+      .attr("stroke", "#aaa")
+      .attr("stroke-location", "outside")
+      .attr("stroke-width", 0)
       .attr("fill", "#6b7a8a");
+
+    var tooltip;
+    if (first){
+      tooltip = d3v4.select("#my_dataviz").append("div")
+        .attr("class", "tooltip-bars")
+        .style("opacity", 0)
+        .html("AAAA" + "<br/>" );
+    }
+
+    bars.on('mousemove', function() {
+      $this = d3v4.select(this);
+      $this
+          .attr("fill", "#abc")
+          .attr("stroke-width", "1px");
+      var data = JSON.parse($this.attr('data-info'));
+      var position = d3v4.mouse(this);
+      tooltip = d3v4.select("div.tooltip-bars");
+      tooltip.transition().duration(100)
+          .style("opacity", .8);
+      tooltip.html(`
+          <blockquote class="white card" style="margin: 0 0 0 0; padding:0.25rem; border-radius: 2px; border-color: ` + units[current_unit].color + `;">
+            <p><b>` + d3v5.format(".3~s")(data.value) + `</b> ` + units[current_unit].shortName + ` in ` + data.date + `</p>
+          </blockquote>`
+          )
+          .style("left", (position[0] + 30) + "px")
+          .style("top", (position[1] + 30) + "px");
+    })
+    .on('mouseout', function() {
+      d3v4.select(this)
+        .attr("fill", "#6b7a8a")
+        .attr("stroke-width", 0)
+      tooltip = d3v4.select("div.tooltip-bars");
+      tooltip.transition().delay(100).duration(100)
+        .style("opacity", 0);
+    });
 
     bars.exit().remove();
 
@@ -150,7 +187,8 @@ function drawBarplot(data){
         .attr("id", "currYearRect")
         .attr("fill-opacity", 0.35)
         .attr("fill", "#6b7a8a")
-        .style("mix-blend-mode", 'screen');
+        .style("mix-blend-mode", 'screen')
+        .style("pointer-events", 'none');
       currYearLineL = svg.append("line")
         .attr("id", "currYearLineL")
         .attr("stroke-opacity", 0.4)

@@ -285,6 +285,7 @@ function toBubbles(input, from_airport) {
             borderWidth: 0.5,
         },
         fills: {
+            //defaultFill: '#131522'
             defaultFill: '#131522'
         },
         <!--projectionConfig: {-->
@@ -305,7 +306,7 @@ function toBubbles(input, from_airport) {
     return `<div class="card blue-grey lighten-5" style="min-width:270px; max-width:270px; opacity: 0.9;">
               <div class="card-content truncate" style="padding: 8px;">
                 <b >` + data.nameTo + `</b>
-                <blockquote class="white" style="margin: 10px 0 0 0; padding:0 0 0.5rem 0.5rem; border-color: ` + units[current_unit].color + `;">
+                <blockquote class="white" style="margin: 10px 0 0 0; padding:0 0 0.5rem 0.5rem; border-radius: 2px; border-color: ` + units[current_unit].color + `;">
                 <p style="padding-top: 8px; font-family: monospace;">` + data.iataFrom + `&thinsp;&hArr;&thinsp;` + data.iataTo + `</p>
                 <p><b>` + d3v5.format(".3~s")(data.value) + `</b> ` + units[current_unit].shortName + ` in ` + current_year + `</p>
                 </blockquote>
