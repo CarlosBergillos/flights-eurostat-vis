@@ -44,7 +44,7 @@ html, body {
   width: 100%;
   position: absolute;
   /*display: inline-block;*/
-  top:0;
+  top: -100px;
   left:0;
 }
 
