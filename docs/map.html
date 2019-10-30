@@ -31,7 +31,7 @@ function toArcs(input, from_airport) {
             if(row[current_unit] > 0){
                 var from = {"latitude":from_airport.lat, "longitude":from_airport.lon};
                 var to = {"latitude":row.airpt_lat, "longitude":row.airpt_lon};
-                pax_factor = 1.5 + Math.pow(row.pax, 5/6)/25000;
+                pax_factor = 1.5 + Math.pow(row.pax, 6/7)/27500;
                 //var options = {}
                 //var data = {"origin": from, "destination": to, "options": options, "name": row.airpt}
                 var data = {"origin": from,
