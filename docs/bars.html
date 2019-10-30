@@ -83,6 +83,8 @@ function NMoveAvg(context, N) {
 var divWidth = $("#lowerContent").width();
 var divHeight = $("#lowerContent").height();
 
+var mouseDown = false;
+
 var margin = {top: 10, right: 60, bottom: 30, left: 30},
     width = divWidth - margin.left - margin.right,
     height = divHeight - margin.top - margin.bottom;
@@ -148,15 +150,21 @@ function drawBarplot(data){
       var data = JSON.parse($this.attr('data-info'));
       var position = d3v4.mouse(this);
       tooltip = d3v4.select("div.tooltip-bars");
+
       tooltip.transition().duration(100)
           .style("opacity", .8);
       tooltip.html(`
-          <blockquote class="white card" style="margin: 0 0 0 0; padding:0.25rem; border-radius: 2px; border-color: ` + units[current_unit].color + `;">
+          <blockquote class="white card" style="white-space:nowrap; margin: 0 0 0 0; padding:0.25rem; border-radius: 2px; border-color: ` + units[current_unit].color + `;">
             <p><b>` + d3v5.format(".3~s")(data.value) + `</b> ` + units[current_unit].shortName + ` in ` + data.date + `</p>
           </blockquote>`
           )
-          .style("left", (position[0] + 30) + "px")
-          .style("top", (position[1] + 30) + "px");
+          .style("left", (position[0] + margin.left + 20) + "px")
+          .style("top", (position[1] + margin.top) + "px");
+
+      //fix tooltip position if outside
+      var tooltip_rect = tooltip.node().getBoundingClientRect();
+      if ((tooltip_rect.x + tooltip_rect.width) > window.innerWidth)
+        tooltip.style("left", (position[0] + margin.left - 200) + 20 + "px")
     })
     .on('mouseout', function() {
       d3v4.select(this)
@@ -258,17 +266,25 @@ function drawBarplot(data){
       .attr('x2', yearX+yearWidth)
       .attr('y2', yearY+height);
 
-    //svg.on("click", function() {
-    d3v4.select("#my_dataviz").on("click", function(d) {
-      var mouse = d3v4.mouse(this);
+    function yearSelectionChange(mouse){
       var xClicked = mouse[0];
       //	var yClicked = mouse[1];
       var dateClicked = x.invert(xClicked-margin.left);
       current_year = Math.min(Math.max(dateClicked.getFullYear(), 2001), 2018);
       updateInfo(false);
-      //d3v4.event.stopPropagation();
-    });
+    }
+    //svg.on("click", function() {
+    d3v4.select("#my_dataviz")
+      .on("mousemove", function(){
+        d3v4.event.preventDefault(); // disable text dragging
+        if (mouseDown) yearSelectionChange(d3v4.mouse(this));
+      })
+      .on("mousedown", function(){yearSelectionChange(d3v4.mouse(this));});
 }
+
+d3v4.select(window)
+  .on("mousedown", function(){mouseDown=true;})
+  .on("mouseup", function(){mouseDown=false;});
 
 function parseBarplotInfo(d){
   return { date : d3v4.timeParse("%YM%m")(d.timeperiod), value : +d[current_unit] }
