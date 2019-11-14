@@ -1,6 +1,6 @@
 <div id="map"></div>
-<a class="btn-floating btn-small waves-effect waves-light deep-orange lighten-1"><i class="material-icons zoom-button" data-zoom="in">add</i></a>
-<a class="btn-floating btn-small waves-effect waves-light deep-orange lighten-1"><i class="material-icons zoom-button" data-zoom="out">remove</i></a>
+<a class="btn-floating btn-small waves-effect waves-light deep-orange lighten-1" style="top: 0; right:0; float:right;"><i class="material-icons zoom-button" data-zoom="in">add</i></a>
+<a class="btn-floating btn-small waves-effect waves-light deep-orange lighten-1" style="top: 0; right:0; float:right;"><i class="material-icons zoom-button" data-zoom="out">remove</i></a>
 <script>
 var circleRadius = 2
 
@@ -31,19 +31,21 @@ function toArcs(input, from_airport) {
             if(row[current_unit] > 0){
                 var from = {"latitude":from_airport.lat, "longitude":from_airport.lon};
                 var to = {"latitude":row.airpt_lat, "longitude":row.airpt_lon};
-                pax_factor = 1.5 + Math.pow(row.pax, 6/7)/27500;
+                pax_factor = Math.pow(row.pax, 6/7)/27500;
                 //var options = {}
                 //var data = {"origin": from, "destination": to, "options": options, "name": row.airpt}
                 var data = {"origin": from,
                             "destination": to,
+                            "icaoFrom": from_airport.airpt,
                             "iataFrom": from_airport.iata,
                             "icaoTo": row.airpt,
                             "iataTo": row.airpt_iata,
                             "nameTo": row.airpt_name,
                             "value": row[current_unit],
+                            //"strokeColor": d3v5.color(units[current_unit].color2).brighter(pax_factor/5),
                             "strokeColor": units[current_unit].color2,
-                            "strokeOpacity": Math.min(0.15+pax_factor/16, 1),
-                            "strokeWidth": pax_factor};
+                            "strokeOpacity": Math.min(0.15+(1.5+pax_factor)/16, 1),
+                            "strokeWidth": 1.5 + pax_factor};
                 arcs.push(data);
             }
         }
@@ -314,19 +316,25 @@ function toBubbles(input, from_airport) {
             </div>`;
   }
 
-  function updateMapInfo(datamap, animate, airport, year){
-    fetch(getUrl(airport, year))
-        .then(response => response.text())
-        .then(text => {
-            from_airport = defiant.search(local_airports, '//*[airpt="'+airport+'"]')[0]
-            jsonArray = parseCSV(text)
-            arcs = toArcs(jsonArray, from_airport);
-            datamap.arc(arcs, {greatArc: true, animationSpeed: 600*animate, popupTemplate: customPopupTemplate});
-            bubbles = toBubbles(jsonArray, from_airport)
-            origin = {"radius": 5/prev_scale, popupOnHover: false, "icaoTo": "", "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
-            bubbles.push(origin)
-            datamap.bubbles(bubbles, {animate: animate, popupTemplate: customPopupTemplate})
-    });
+  function updateMapInfo(datamap, airport, year, clear){
+    if(clear){
+      datamap.arc([], {animationSpeed: animationSpeed});
+      datamap.bubbles([], {animate: true, animationSpeed: animationSpeed});
+    }
+    setTimeout(function () {
+      fetch(getUrl(airport, year))
+          .then(response => response.text())
+          .then(text => {
+              from_airport = defiant.search(local_airports, '//*[airpt="'+airport+'"]')[0]
+              jsonArray = parseCSV(text)
+              arcs = toArcs(jsonArray, from_airport);
+              datamap.arc(arcs, {greatArc: true, animationSpeed: animationSpeed, popupTemplate: customPopupTemplate});
+              bubbles = toBubbles(jsonArray, from_airport)
+              origin = {"radius": 5/prev_scale, popupOnHover: false, "icaoFrom":airport, "icaoTo": airport, "latitude":from_airport.lat, "longitude":from_airport.lon, borderWidth: 1, borderOpacity: 0.5, fillColor: 'rgba(255, 255, 255, 0.5', fillOpacity: 1}
+              bubbles.push(origin)
+              datamap.bubbles(bubbles, {animate: true, animationSpeed: animationSpeed, popupTemplate: customPopupTemplate})
+      });
+    }, animationSpeed*clear);
   }
 
   Datamap.prototype._handleMapReady = function(datamap) {
@@ -337,12 +345,7 @@ function toBubbles(input, from_airport) {
     this_datamap = datamap;
     d3v3.json("data/local_airports.json", function(error, dataLocal) {
       local_airports = dataLocal;
-      updateMapInfo(datamap, true, current_airport, current_year);
-      d3v3.select("#change-aip").on("click", function(){
-          //current_airport = (++current_airport)%airports.length;
-          //current_year = (++current_year)%years.length;
-          //updateMapInfo(datamap, true, current_airport, current_year);
-      });
+      updateMapInfo(datamap, current_airport, current_year, false);
     });
   }
 

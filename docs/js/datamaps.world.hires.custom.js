@@ -346,13 +346,12 @@
       options = defaultOptions.arcConfig;
     }
 
-    var arcs = layer.selectAll('path.datamaps-arc').data( data, JSON.stringify );
+    var arcs = layer.selectAll('path.datamaps-arc').data(data, function(d){ return d.icaoFrom+"-"+d.icaoTo; });
 
     var path = d3.geo.path()
         .projection(self.projection);
 
-    arcs
-      .enter()
+    arcs.enter()
         .append('svg:path')
         .attr('class', 'datamaps-arc')
         .style('stroke-linecap', 'round')
@@ -429,7 +428,7 @@
           }
         })
         .transition()
-          .delay(100)
+          //.delay(100)
           .style('fill', function(datum) {
             /*
               Thank you Jake Archibald, this is awesome.
@@ -440,16 +439,34 @@
             this.style.strokeDasharray = length + ' ' + length;
             this.style.strokeDashoffset = length;
             this.getBoundingClientRect();
-            this.style.transition = this.style.WebkitTransition = 'stroke-dashoffset ' + val(datum.animationSpeed, options.animationSpeed, datum) + 'ms ease-out';
+            this.style.transition = this.style.WebkitTransition = 'stroke-dashoffset ' + options.animationSpeed + 'ms ease-out';
             this.style.strokeDashoffset = '0';
             return 'none';
-          }).delay(100).each("end", function(){
+          }).delay(options.animationSpeed).each("end", function(){
             this.style.strokeDasharray = '';
             this.style.opacity = 1;
-        })
+          })
+
+    arcs.transition()
+      .duration(options.animationSpeed)
+      .style('stroke-opacity', function(datum) {
+        return val(datum.strokeOpacity, options.strokeOpacity, datum);
+      })
+      .style('stroke-width', function(datum) {
+        return val(datum.strokeWidth, options.strokeWidth, datum);
+      })
+      .attr('data-info', function(d) {
+        return JSON.stringify(d);
+      })
+      //.delay(options.animationSpeed)
+      .each("end", function(){
+        this.style.strokeDasharray = '';
+        this.style.opacity = 1;
+      });
 
     arcs.exit()
       .transition()
+      .duration(options.animationSpeed)
       .style('opacity', 0)
       .remove();
   }
@@ -515,10 +532,9 @@
       throw "Datamaps Error - bubbles must be an array";
     }
 
-    var bubbles = layer.selectAll('circle.datamaps-bubble').data( data, options.key );
+    var bubbles = layer.selectAll('circle.datamaps-bubble').data( data, function(d){ return d.icaoTo; });
 
-    bubbles
-      .enter()
+    bubbles.enter()
         .append('svg:circle')
         .attr('class', 'datamaps-bubble')
         .attr('cx', function ( datum ) {
@@ -550,7 +566,6 @@
           if ( latLng ) return latLng[1];
         })
         .attr('r', function(datum) {
-          // If animation enabled start with radius 0, otherwise use full size.
           return options.animate ? 0 : val(datum.radius, options.radius, datum);
         })
         .attr('data-info', function(datum) {
@@ -603,7 +618,7 @@
           }
 
           var data = JSON.parse($this.attr('data-info'));
-          if (options.popupOnHover && data.icaoTo) {
+          if (options.popupOnHover && (data.icaoTo!=data.icaoFrom)) {
             self.updatePopup($this, datum, options, svg);
           }
           if (!d3.event.detail.artificial){
@@ -638,21 +653,19 @@
         })
 
     bubbles.transition()
-      .duration(400)
+      .duration(options.animationSpeed)
       .attr('r', function ( datum ) {
         return val(datum.radius, options.radius, datum);
       })
-    .transition()
-      .duration(0)
       .attr('data-info', function(d) {
         return JSON.stringify(d);
       });
 
     bubbles.exit()
       .transition()
-        .delay(options.exitDelay)
-        .attr("r", 0)
-        .remove();
+      .duration(options.animationSpeed)
+      .attr("r", 0)
+      .remove();
 
     function datumHasCoords (datum) {
       return typeof datum !== 'undefined' && typeof datum.latitude !== 'undefined' && typeof datum.longitude !== 'undefined';

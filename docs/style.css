@@ -66,9 +66,9 @@ html, body {
 
 .btn-floating{
   position: absolute;
-  top: 0;
-  right: 0;
-  float: right;
+  /*top: 0;*/
+  /*right: 0;*/
+  /*float: right;*/
   margin: 10px 10px 10px 0px;
   /*margin-left: 20px;*/
   /*margin-bottom: 0px;*/

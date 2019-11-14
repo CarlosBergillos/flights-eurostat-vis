@@ -45,6 +45,7 @@
     </div>
     <a id="dropdown-unit-trigger" class="dropdown-trigger btn-small" style="position: absolute; z-index: 1; bottom:220px; margin:10px; width:260px;" href="#" data-target="dropdown-unit"></a>
     <ul id="dropdown-unit" class="dropdown-content" style="position: absolute; z-index: 1; top:0px; margin:10px;"></ul>
+    <a id="play_time" class="btn-floating btn-small waves-effect waves-light deep-orange lighten-1" style="position: absolute; z-index: 1; bottom:220px; margin:10px; right: 0;"><i class="material-icons">play_arrow</i></a>
     <div class="lower" id="lowerContent"></div>
   </div>
   <script>
@@ -52,13 +53,26 @@
     var current_year = 2018;
     var current_unit = "pax";
 
+    var animationSpeed = 600;
+
+    var playing_time = false;
+    var playing_interval;
+
     var units = {"pax": {shortName:"pax", name: "Number of Passengers", icon: "people", color: "#ff7043", color2: "#ff6732"},
                  "flights": {shortName:"flights", name: "Number of Flights", icon: "flight_takeoff", color: "#673ab7", color2: "#673ab7"}
                  //"co2": {shortName:"CO2", name: "CO2 emissions (kg)", icon: "public", color: "#00897b", color2: "#006732"}
                 };
 
-    function updateInfo(animate){
-      updateMapInfo(this_datamap, animate, current_airport, current_year);
+    function playTime(delay){
+      playing_interval = setInterval(function() {
+        current_year++;
+        if (current_year>2018) current_year=2001;
+        updateInfo(false);
+      }, delay);
+    }
+
+    function updateInfo(clear){
+      updateMapInfo(this_datamap, current_airport, current_year, clear);
       updateBarsInfo(current_airport);
     }
 
@@ -111,7 +125,7 @@
       .on("click", function(d){
         current_unit = d.key;
         updateUnit();
-        updateInfo(true);
+        updateInfo(false);
       })
       .append('a')
       .attr("class", "blue-grey-text text-darken-2")
@@ -128,5 +142,19 @@
       //.append('li', "#dropdown1")
       //.attr("class", "divider")
       //.attr("tab-index", -1);
+
+    d3v4.select("#play_time")
+      .on("click", function(d){
+        if(!playing_time){
+          playing_time = true;
+          playTime(1000);
+          d3v4.select(this).select("i").text("pause");
+        }else{
+          clearInterval(playing_interval);
+          d3v4.select(this).select("i").text("play_arrow");
+          playing_time = false;
+        }
+        
+      });
   </script>
 </body>
